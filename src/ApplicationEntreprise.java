@@ -7,7 +7,9 @@ public class ApplicationEntreprise {
     private String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Mama@0202";
     private Connection connection = null;
     static PreparedStatement connexionEntrepriseSql = null;
+    static PreparedStatement encoderOffreStage = null;
     static Scanner scanner = new Scanner(System.in);
+    static String idEntreprise;
 
     public void ProgrammePrincipal() {
         try {
@@ -28,14 +30,21 @@ public class ApplicationEntreprise {
             System.out.println("Impossible de préparer la requête !");
             System.exit(1);
         }
+        try {
+            encoderOffreStage = connection.prepareStatement("Projet_BD2.ajouterStage(?,?,?);");
+        } catch (SQLException e) {
+            System.out.println("Impossible de préparer la requête !");
+            System.exit(1);
+        }
     }
 
     public static void main(String[] args) {
         ApplicationEntreprise app = new ApplicationEntreprise();
         app.ProgrammePrincipal();
+        connexionEntreprises();
     }
 
-    public static boolean connexionEntreprises(){
+    public static void connexionEntreprises(){
         System.out.println("***************** connexion entreprise *****************");
         System.out.println("Veuillez entrer votre nom d'utilisateur");
         String email = scanner.nextLine();
@@ -49,22 +58,28 @@ public class ApplicationEntreprise {
         } catch (SQLException se) {
             System.out.println("Erreur lors de l’insertion !");
             se.printStackTrace();
-            applicationCentrale();
+            connexionEntreprises();
         }
         try {
-            if (connexionEntrepriseSql.getResultSet().next()) {
-                System.out.println("Connexion réussie");
-                applicationCentrale();
+            ResultSet rs = connexionEntrepriseSql.getResultSet();
+            if (rs.next()) {
+                idEntreprise = rs.getString(1);
             } else {
-                System.out.println("Connexion échouée");
+                System.out.println("Erreur lors de l’insertion !");
                 connexionEntreprises();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException se) {
+            System.out.println("Erreur lors de l’insertion !");
+            se.printStackTrace();
+            connexionEntreprises();
         }
+        System.out.println("Connexion réussie !");
+        System.out.println();
+        applicationCentrale();
     }
 
     public static void applicationCentrale() {
+        System.out.println("idEntreprise : " + idEntreprise);
         System.out.println("***************** application entreprise *****************");
         System.out.println("1 :Encoder une offre de stage");
         System.out.println("2 :Voir les mots-clés disponibles pour une offre de stage");
@@ -105,6 +120,7 @@ public class ApplicationEntreprise {
 
 
     private static void encoderOffre() {
+
     }
     private static void ajouterMotClefs() {
     }
