@@ -1,6 +1,4 @@
-import javax.swing.*;
 import java.sql.*;
-import java.util.Random;
 import java.util.Scanner;
 
 public class ApplicationEntreprise {
@@ -25,7 +23,7 @@ public class ApplicationEntreprise {
             System.exit(1);
         }
         try {
-            connexionEntrepriseSql = connection.prepareStatement("SELECT * FROM Projet_BD2.connexionEntreprise(?,?);");
+            connexionEntrepriseSql = connection.prepareStatement("SELECT mdp_hash, code FROM Projet_BD2.entreprises WHERE email = ?;");
         } catch (SQLException e) {
             System.out.println("Impossible de préparer la requête !");
             System.exit(1);
@@ -43,39 +41,40 @@ public class ApplicationEntreprise {
         app.ProgrammePrincipal();
         connexionEntreprises();
     }
-
-    public static void connexionEntreprises(){
-        System.out.println("***************** connexion entreprise *****************");
+    public static void connexionEntreprises() {
+        System.out.println("***************** Connexion entreprise *****************");
         System.out.println("Veuillez entrer votre nom d'utilisateur");
-        String email = scanner.nextLine();
+        String email = "Entreprise1.test@Entreprise.test"; //scanner.nextLine(); // TODO: 07/05/2021 "
         System.out.println("Veuillez entrer votre mot de passe");
-        String password = scanner.nextLine();
+        String passwordUser = scanner.nextLine();
+
         try {
             connexionEntrepriseSql.setString(1, email);
-            connexionEntrepriseSql.setString(2, password);
             connexionEntrepriseSql.execute();
-
-        } catch (SQLException se) {
-            System.out.println("Erreur lors de l’insertion !");
-            se.printStackTrace();
-            connexionEntreprises();
-        }
-        try {
             ResultSet rs = connexionEntrepriseSql.getResultSet();
+
             if (rs.next()) {
-                idEntreprise = rs.getString(1);
+                String hashedPasswordFromDB = rs.getString(1);
+
+                if (BCrypt.checkpw(passwordUser, hashedPasswordFromDB)) {
+                    idEntreprise = rs.getString(2);
+                    System.out.println("Connexion réussie !");
+                    System.out.println();
+                    applicationCentrale();
+                } else {
+                    System.out.println("Mot de passe incorrect ! Veuillez réessayer.");
+                    connexionEntreprises();
+                }
             } else {
-                System.out.println("Erreur lors de l’insertion !");
+                System.out.println("Email incorrect ! Veuillez réessayer.");
                 connexionEntreprises();
             }
+
         } catch (SQLException se) {
-            System.out.println("Erreur lors de l’insertion !");
+            System.out.println("Erreur lors de la connexion !");
             se.printStackTrace();
             connexionEntreprises();
         }
-        System.out.println("Connexion réussie !");
-        System.out.println();
-        applicationCentrale();
     }
 
     public static void applicationCentrale() {
