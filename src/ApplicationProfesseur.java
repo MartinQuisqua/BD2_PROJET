@@ -1,17 +1,12 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 public class ApplicationProfesseur {
 
 	private String url = "jdbc:postgresql://localhost:5432/";
-	private Connection connection = null;
-	private static PreparedStatement connexionEntrepriseSql = null;
-	private static PreparedStatement encoderOffreStage = null;
+	private static Connection connection = null;
+	private static PreparedStatement encoderEtudiant = null;
 	private static Scanner scanner = new Scanner(System.in);
-	private static String idEntreprise;
 
 	public void ProgrammePrincipal() {
 		try {
@@ -20,16 +15,20 @@ public class ApplicationProfesseur {
 			System.out.println("Driver PostgreSQL manquant !");
 			System.exit(1);
 		}
-		System.out.println("Entrez votre user name postgres");
-		String usernamePostgresse = scanner.nextLine();
-
 		System.out.println("Entrez votre mot de passe postgres");
-		String mdpPostgresse = scanner.nextLine();
+		String mdpPostgres = scanner.nextLine();
 
 		try {
-			connection = DriverManager.getConnection(url, usernamePostgresse, mdpPostgresse);
+			connection = DriverManager.getConnection(url, "postgres", mdpPostgres);
 		} catch (SQLException e) {
 			System.out.println("Impossible de joindre le server !");
+			System.exit(1);
+		}
+
+		try {
+			encoderEtudiant = connection.prepareStatement("SELECT Projet_BD2.encoderEtudiant(?, ?, ?, ?, ?)");
+		} catch (SQLException e) {
+			System.out.println("Impossible de préparer la requête !");
 			System.exit(1);
 		}
 	}
@@ -41,8 +40,7 @@ public class ApplicationProfesseur {
 	}
 
 	public static void applicationCentrale() {
-		System.out.println("idEntreprise : " + idEntreprise);
-		System.out.println("***************** application entreprise *****************");
+		System.out.println("***************** application Professeur *****************");
 		System.out.println("1 : Encoder un étudiant");
 		System.out.println("2 : Encoder une entreprise");
 		System.out.println("3 : Encoder un mot-clé");
@@ -81,35 +79,65 @@ public class ApplicationProfesseur {
 		}
 	}
 
-	private static void encoderEtudiant(){
-		
+	private static void encoderEtudiant() {
+		String sel = BCrypt.gensalt();
+
+		try{
+			System.out.println("Veuillez entrez le nom de l'etudiant : ");
+			encoderEtudiant.setString(1, scanner.next());
+
+			System.out.println("Veuillez entrez le prenom de l'etudiant : ");
+			encoderEtudiant.setString(2, scanner.next());
+
+			System.out.println("Veuillez entrez le mot de passe de l'etudiant : ");
+			encoderEtudiant.setString(3, BCrypt.hashpw(scanner.next(), sel));
+
+			System.out.println("Veuillez entrez le e-mail de l'etudiant : ");
+			encoderEtudiant.setString(4, scanner.next());
+
+			System.out.println("Veuillez entrez le semestre de l'etudiant : ");
+			encoderEtudiant.setString(5, scanner.next());
+
+			encoderEtudiant.execute();
+
+			ResultSet rs = encoderEtudiant.getResultSet();
+
+			while (rs.next()){
+				System.out.println("id nouvelle etudiant creer : " + rs.getString(1));
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Impossible d'encoder un étudiant !");
+			e.printStackTrace();
+			//System.exit(1);
+		}
 	}
 
-	private static void encoderEntreprise(){
+	private static void encoderEntreprise() {
 
 	}
 
-	private static void encoderMotClef(){
+	private static void encoderMotClef() {
 
 	}
 
-	private static void offres_stage_nv(){
+	private static void offres_stage_nv() {
 
 	}
 
-	private static void valider_stage(){
+	private static void valider_stage() {
 
 	}
 
-	private static void offres_stage_va(){
+	private static void offres_stage_va() {
 
 	}
 
-	private static void etudiants_sans_stage(){
+	private static void etudiants_sans_stage() {
 
 	}
 
-	private static void offres_stage_at(){
+	private static void offres_stage_at() {
 
 	}
 }
