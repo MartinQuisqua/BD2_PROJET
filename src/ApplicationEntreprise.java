@@ -62,11 +62,11 @@ public class ApplicationEntreprise {
                     System.out.println();
                     applicationCentrale();
                 } else {
-                    System.out.println("Mot de passe incorrect ! Veuillez réessayer.");
+                    System.out.println("Email ou mot de passe incorrect ! Veuillez réessayer.");
                     connexionEntreprises();
                 }
             } else {
-                System.out.println("Email incorrect ! Veuillez réessayer.");
+                System.out.println("Email ou mot de passe incorrect ! Veuillez réessayer.");
                 connexionEntreprises();
             }
 
