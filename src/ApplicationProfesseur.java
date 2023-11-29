@@ -77,19 +77,19 @@ public class ApplicationProfesseur {
 				encoderMotClef();
 				break;
 			case 4:
-				offres_stage_nv();
+				offresStageNV();
 				break;
 			case 5:
-				valider_stage();
+				validerStage();
 				break;
 			case 6:
-				offres_stage_va();
+				offresStageVA();
 				break;
 			case 7:
-				etudiants_sans_stage();
+				etudiantsSansStage();
 				break;
 			case 8:
-				offres_stage_at();
+				offresStageAT();
 				break;
 			default:
 				quitterProgramme();
@@ -180,23 +180,23 @@ public class ApplicationProfesseur {
 		}
 	}
 
-	private void offres_stage_nv() {
+	private void offresStageNV() {
 
 	}
 
-	private void valider_stage() {
+	private void validerStage() {
 
 	}
 
-	private void offres_stage_va() {
+	private void offresStageVA() {
 
 	}
 
-	private void etudiants_sans_stage() {
+	private void etudiantsSansStage() {
 
 	}
 
-	private void offres_stage_at() {
+	private void offresStageAT() {
 
 	}
 
