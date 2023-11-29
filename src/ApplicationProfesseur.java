@@ -7,6 +7,7 @@ public class ApplicationProfesseur {
 	private Connection connection = null;
 	private PreparedStatement encoderEtudiant = null;
 	private PreparedStatement encoderEntreprise = null;
+	private PreparedStatement encoderMotClef = null;
 	private PreparedStatement offresStageNV = null;
 	private PreparedStatement validerStage = null;
 	private PreparedStatement offresStageVA = null;
@@ -34,6 +35,12 @@ public class ApplicationProfesseur {
 		try {
 			encoderEtudiant = connection.prepareStatement("SELECT Projet_BD2.encoderEtudiant(?, ?, ?, ?, ?)");
 			encoderEntreprise = connection.prepareStatement("SELECT  Projet_BD2.encoderEntreprise(?, ?, ?, ?, ?)");
+			encoderMotClef = connection.prepareStatement("SELECT Projet_BD2.encoderMotClef(?)");
+			offresStageNV = connection.prepareStatement("SELECT * FROM Projet_BD2.offres_stage_nv");
+			validerStage = connection.prepareStatement("SELECT  Projet_BD2.valider_stage(?)");
+			offresStageVA = connection.prepareStatement("SELECT * FROM Projet_BD2.offres_stage_va");
+			etudiantsSansStage = connection.prepareStatement("SELECT * FROM Projet_BD2.etudiants_sans_stage");
+			offresStageAT = connection.prepareStatement("SELECT * FROM Projet_BD2.offres_stage_at");
 		} catch (SQLException e) {
 			System.out.println("Impossible de préparer la requête !");
 			System.exit(1);
@@ -155,7 +162,22 @@ public class ApplicationProfesseur {
 	}
 
 	private void encoderMotClef() {
+		try {
+			System.out.println("Veuillez entrez le nom de l'entreprise : ");
+			encoderEntreprise.setString(1, scanner.next());
 
+			encoderEntreprise.execute();
+			ResultSet rs = encoderEntreprise.getResultSet();
+
+			while (rs.next()) {
+				System.out.println("Code nouvelle entreprise creer : " + rs.getString(1));
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Impossible d'encoder un entreprise !");
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	private void offres_stage_nv() {
