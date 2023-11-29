@@ -170,18 +170,30 @@ public class ApplicationProfesseur {
 			ResultSet rs = encoderEntreprise.getResultSet();
 
 			while (rs.next()) {
-				System.out.println("Code nouvelle entreprise creer : " + rs.getString(1));
+				System.out.println("Code nouveau mot clef creer : " + rs.getString(1));
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Impossible d'encoder un entreprise !");
+			System.out.println("Impossible d'encoder le mot clef !");
 			e.printStackTrace();
 			System.exit(1);
 		}
 	}
 
 	private void offresStageNV() {
+		try {
 
+			offresStageNV.execute();
+			ResultSet rs = offresStageNV.getResultSet();
+
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			System.out.println("Impossible d'afficher les offres de stage non valider !");
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	private void validerStage() {
@@ -189,15 +201,51 @@ public class ApplicationProfesseur {
 	}
 
 	private void offresStageVA() {
+		try {
 
+			offresStageNV.execute();
+			ResultSet rs = offresStageNV.getResultSet();
+
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			System.out.println("Impossible d'afficher les offres de stage valider !");
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	private void etudiantsSansStage() {
+		try {
 
+			offresStageNV.execute();
+			ResultSet rs = offresStageNV.getResultSet();
+
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			System.out.println("Impossible d'afficher les etudiant de sans stage !");
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	private void offresStageAT() {
+		try {
 
+			offresStageNV.execute();
+			ResultSet rs = offresStageNV.getResultSet();
+
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			System.out.println("Impossible d'afficher les offres de stage attribuer !");
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	private void quitterProgramme() {
