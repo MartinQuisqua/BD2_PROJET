@@ -7,6 +7,7 @@ public class ApplicationProfesseur {
 	private Connection connection = null;
 	private PreparedStatement encoderEtudiant = null;
 	private PreparedStatement encoderEntreprise = null;
+	private PreparedStatement encoderMotClef = null;
 	private PreparedStatement offresStageNV = null;
 	private PreparedStatement validerStage = null;
 	private PreparedStatement offresStageVA = null;
@@ -34,6 +35,12 @@ public class ApplicationProfesseur {
 		try {
 			encoderEtudiant = connection.prepareStatement("SELECT Projet_BD2.encoderEtudiant(?, ?, ?, ?, ?)");
 			encoderEntreprise = connection.prepareStatement("SELECT  Projet_BD2.encoderEntreprise(?, ?, ?, ?, ?)");
+			encoderMotClef = connection.prepareStatement("SELECT Projet_BD2.encoderMotClef(?)");
+			offresStageNV = connection.prepareStatement("SELECT * FROM Projet_BD2.offres_stage_nv");
+			validerStage = connection.prepareStatement("SELECT  Projet_BD2.valider_stage(?)");
+			offresStageVA = connection.prepareStatement("SELECT * FROM Projet_BD2.offres_stage_va");
+			etudiantsSansStage = connection.prepareStatement("SELECT * FROM Projet_BD2.etudiants_sans_stage");
+			offresStageAT = connection.prepareStatement("SELECT * FROM Projet_BD2.offres_stage_at");
 		} catch (SQLException e) {
 			System.out.println("Impossible de préparer la requête !");
 			System.exit(1);
@@ -70,19 +77,19 @@ public class ApplicationProfesseur {
 				encoderMotClef();
 				break;
 			case 4:
-				offres_stage_nv();
+				offresStageNV();
 				break;
 			case 5:
-				valider_stage();
+				validerStage();
 				break;
 			case 6:
-				offres_stage_va();
+				offresStageVA();
 				break;
 			case 7:
-				etudiants_sans_stage();
+				etudiantsSansStage();
 				break;
 			case 8:
-				offres_stage_at();
+				offresStageAT();
 				break;
 			default:
 				quitterProgramme();
@@ -155,27 +162,90 @@ public class ApplicationProfesseur {
 	}
 
 	private void encoderMotClef() {
+		try {
+			System.out.println("Veuillez entrez le nom de l'entreprise : ");
+			encoderEntreprise.setString(1, scanner.next());
+
+			encoderEntreprise.execute();
+			ResultSet rs = encoderEntreprise.getResultSet();
+
+			while (rs.next()) {
+				System.out.println("Code nouveau mot clef creer : " + rs.getString(1));
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Impossible d'encoder le mot clef !");
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	private void offresStageNV() {
+		try {
+
+			offresStageNV.execute();
+			ResultSet rs = offresStageNV.getResultSet();
+
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			System.out.println("Impossible d'afficher les offres de stage non valider !");
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	private void validerStage() {
 
 	}
 
-	private void offres_stage_nv() {
+	private void offresStageVA() {
+		try {
 
+			offresStageNV.execute();
+			ResultSet rs = offresStageNV.getResultSet();
+
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			System.out.println("Impossible d'afficher les offres de stage valider !");
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
-	private void valider_stage() {
+	private void etudiantsSansStage() {
+		try {
 
+			offresStageNV.execute();
+			ResultSet rs = offresStageNV.getResultSet();
+
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			System.out.println("Impossible d'afficher les etudiant de sans stage !");
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
-	private void offres_stage_va() {
+	private void offresStageAT() {
+		try {
 
-	}
+			offresStageNV.execute();
+			ResultSet rs = offresStageNV.getResultSet();
 
-	private void etudiants_sans_stage() {
-
-	}
-
-	private void offres_stage_at() {
-
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			System.out.println("Impossible d'afficher les offres de stage attribuer !");
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	private void quitterProgramme() {
