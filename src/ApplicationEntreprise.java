@@ -9,6 +9,7 @@ public class ApplicationEntreprise {
     private PreparedStatement affichageMotClefs = null;
     private PreparedStatement ajouterMotClefs = null;
     private PreparedStatement voirSesOffres = null;
+    private PreparedStatement voirSesCandidature = null;
     private Scanner scanner = new Scanner(System.in);
     private String idEntreprise;
 
@@ -31,6 +32,7 @@ public class ApplicationEntreprise {
             affichageMotClefs = connection.prepareStatement("SELECT * FROM Projet_BD2.affichage_mot_clefs;");
             ajouterMotClefs = connection.prepareStatement("SELECT Projet_BD2.ajouterMotClef(?,?,?);");
             voirSesOffres = connection.prepareStatement("SELECT * FROM Projet_BD2.voir_offres_des_stages WHERE code_entreprise = ?;");
+            voirSesCandidature = connection.prepareStatement("SELECT * FROM Projet_BD2.voir_candidatures, Projet_BD2.stages st WHERE st.code_stage = ?;");
         } catch (SQLException e) {
             System.out.println("Impossible de préparer la requête !");
             System.exit(1);
@@ -81,8 +83,7 @@ public class ApplicationEntreprise {
     }
 
     public void applicationCentrale() {
-        System.out.println("idEntreprise : " + idEntreprise);
-        System.out.println("***************** application entreprise *****************");
+        System.out.println("***************** application entreprise de " + idEntreprise + " *****************");
         System.out.println("1 :Encoder une offre de stage");
         System.out.println("2 :Voir les mots-clés disponibles pour une offre de stage");
         System.out.println("3 :Ajouter un mot-clé à une de ses offres de stage");
@@ -198,6 +199,29 @@ public class ApplicationEntreprise {
         }
     }
     private void voirSesCandidature() {
+        System.out.println("***************** Voir les candidatures pour une de ses offres de stages *****************");
+        System.out.println("Veuillez entrer le code de l'offre de stage :");
+        String code = scanner.nextLine();
+        try {
+            voirSesCandidature.setString(1, code);
+            voirSesCandidature.execute();
+            ResultSet rs = voirSesCandidature.getResultSet();
+           if (!rs.next()) {
+                System.out.println("Aucune candidature pour cette offre de stage");
+                applicationCentrale();
+            }
+            System.out.println("_______________________________________________________");
+            System.out.println("  |  etat  |  nom  |  prenom  |  email  |  motivation  |");
+            System.out.println("_______________________________________________________");
+            while (rs.next()) {
+                System.out.printf("  | %-5s | %-7s | %-6s | %-10s | %-4s |\n", rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+            }
+            System.out.println("_______________________________________________________");
+            applicationCentrale();
+        } catch (SQLException se) {
+            se.printStackTrace();
+            System.out.println("Aucun cours disponible");
+        }
     }
     private void selectionnerEtudiant() {
     }
