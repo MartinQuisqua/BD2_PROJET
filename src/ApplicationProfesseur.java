@@ -61,7 +61,7 @@ public class ApplicationProfesseur {
 		System.out.println("5 : Valider une offre de stage");
 		System.out.println("6 : Voir les offres de stage dans l’état « validée »");
 		System.out.println("7 : Voir les étudiants qui n’ont pas de stage");
-		System.out.println("8 : Voir les étudiants qui n’ont pas de stage");
+		System.out.println("8 : Voir les offres de stage dans l’état « attribuée »");
 		System.out.println("autre : quitter le programme");
 
 		int choix = scanner.nextInt();
@@ -200,24 +200,33 @@ public class ApplicationProfesseur {
 	}
 
 	private void validerStage() {
-		/*try {
+		try {
+			System.out.println("Veuillez entrez le code du stage : ");
+			validerStage.setString(1, scanner.next());
 
-		}catch (SQLException e){
+			validerStage.execute();
+			ResultSet rs = validerStage.getResultSet();
 
+			while (rs.next()) {
+				System.out.println("Code nouveau mot clef creer : " + rs.getString(1));
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Impossible d'encoder un entreprise !");
+			e.printStackTrace();
+			System.exit(1);
 		}
-
-		 */
 		applicationCentrale();
 	}
 
 	private void offresStageVA() {
 		try {
 
-			offresStageNV.execute();
-			ResultSet rs = offresStageNV.getResultSet();
+			offresStageVA.execute();
+			ResultSet rs = offresStageVA.getResultSet();
 
 			while (rs.next()) {
-				System.out.println(rs.getString(1));
+				System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5));
 			}
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les offres de stage valider !");
@@ -230,14 +239,14 @@ public class ApplicationProfesseur {
 	private void etudiantsSansStage() {
 		try {
 
-			offresStageNV.execute();
-			ResultSet rs = offresStageNV.getResultSet();
+			etudiantsSansStage.execute();
+			ResultSet rs = etudiantsSansStage.getResultSet();
 
 			while (rs.next()) {
-				System.out.println(rs.getString(1));
+				System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5) + " | " + rs.getString(6));
 			}
 		} catch (SQLException e) {
-			System.out.println("Impossible d'afficher les etudiant de sans stage !");
+			System.out.println("Impossible d'afficher les etudiant sans stage !");
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -247,11 +256,11 @@ public class ApplicationProfesseur {
 	private void offresStageAT() {
 		try {
 
-			offresStageNV.execute();
-			ResultSet rs = offresStageNV.getResultSet();
+			offresStageAT.execute();
+			ResultSet rs = offresStageAT.getResultSet();
 
 			while (rs.next()) {
-				System.out.println(rs.getString(1));
+				System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5) + " | " + rs.getString(6));
 			}
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les offres de stage attribuer !");
