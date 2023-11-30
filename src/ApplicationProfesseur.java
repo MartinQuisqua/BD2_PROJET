@@ -22,11 +22,10 @@ public class ApplicationProfesseur {
 			System.out.println("Driver PostgreSQL manquant !");
 			System.exit(1);
 		}
-		System.out.println("Entrez votre mot de passe postgres");
-		String mdpPostgres = scanner.nextLine();
 
 		try {
-			connection = DriverManager.getConnection(url, "postgres", mdpPostgres);
+			System.out.println("Entrez votre mot de passe postgres");
+			connection = DriverManager.getConnection(url, "postgres", scanner.nextLine());
 		} catch (SQLException e) {
 			System.out.println("Impossible de joindre le server !");
 			System.exit(1);
@@ -36,11 +35,11 @@ public class ApplicationProfesseur {
 			encoderEtudiant = connection.prepareStatement("SELECT Projet_BD2.encoderEtudiant(?, ?, ?, ?, ?)");
 			encoderEntreprise = connection.prepareStatement("SELECT  Projet_BD2.encoderEntreprise(?, ?, ?, ?, ?)");
 			encoderMotClef = connection.prepareStatement("SELECT Projet_BD2.encoderMotClef(?)");
-			offresStageNV = connection.prepareStatement("SELECT * FROM Projet_BD2.offres_stage_nv");
-			validerStage = connection.prepareStatement("SELECT  Projet_BD2.valider_stage(?)");
-			offresStageVA = connection.prepareStatement("SELECT * FROM Projet_BD2.offres_stage_va");
-			etudiantsSansStage = connection.prepareStatement("SELECT * FROM Projet_BD2.etudiants_sans_stage");
-			offresStageAT = connection.prepareStatement("SELECT * FROM Projet_BD2.offres_stage_at");
+			offresStageNV = connection.prepareStatement("SELECT * FROM Projet_BD2.offresStageNV");
+			validerStage = connection.prepareStatement("SELECT  Projet_BD2.validerStage(?)");
+			offresStageVA = connection.prepareStatement("SELECT * FROM Projet_BD2.offresStageVA");
+			etudiantsSansStage = connection.prepareStatement("SELECT * FROM Projet_BD2.etudiantsSansStage");
+			offresStageAT = connection.prepareStatement("SELECT * FROM Projet_BD2.offresStageAT");
 		} catch (SQLException e) {
 			System.out.println("Impossible de préparer la requête !");
 			System.exit(1);
@@ -106,11 +105,11 @@ public class ApplicationProfesseur {
 			System.out.println("Veuillez entrez le prenom de l'etudiant : ");
 			encoderEtudiant.setString(2, scanner.next());
 
-			System.out.println("Veuillez entrez le mot de passe de l'etudiant : ");
-			encoderEtudiant.setString(3, BCrypt.hashpw(scanner.next(), sel));
-
 			System.out.println("Veuillez entrez le e-mail de l'etudiant : ");
-			encoderEtudiant.setString(4, scanner.next());
+			encoderEtudiant.setString(3, scanner.next());
+
+			System.out.println("Veuillez entrez le mot de passe de l'etudiant : ");
+			encoderEtudiant.setString(4, BCrypt.hashpw(scanner.next(), sel));
 
 			System.out.println("Veuillez entrez le semestre de l'etudiant : ");
 			encoderEtudiant.setString(5, scanner.next());
@@ -127,22 +126,23 @@ public class ApplicationProfesseur {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		applicationCentrale();
 	}
 
 	private void encoderEntreprise() {
 		String sel = BCrypt.gensalt();
 		try {
-			System.out.println("Veuillez entrez le code de l'entreprise : ");
+			System.out.println("Veuillez entrez le nom de l'entreprise : ");
 			encoderEntreprise.setString(1, scanner.next());
 
-			System.out.println("Veuillez entrez le nom de l'entreprise : ");
+			System.out.println("Veuillez entrez le code de l'entreprise : ");
 			encoderEntreprise.setString(2, scanner.next());
 
 			System.out.println("Veuillez entrez le e-mail de l'entreprise : ");
-			encoderEntreprise.setString(3, BCrypt.hashpw(scanner.next(), sel));
+			encoderEntreprise.setString(3, scanner.next());
 
 			System.out.println("Veuillez entrez le mot de passe de l'entreprise : ");
-			encoderEntreprise.setString(4, scanner.next());
+			encoderEntreprise.setString(4, BCrypt.hashpw(scanner.next(), sel));
 
 			System.out.println("Veuillez entrez l'adressee de l'entreprise : ");
 			encoderEntreprise.setString(5, scanner.next());
@@ -159,15 +159,16 @@ public class ApplicationProfesseur {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		applicationCentrale();
 	}
 
 	private void encoderMotClef() {
 		try {
-			System.out.println("Veuillez entrez le nom de l'entreprise : ");
-			encoderEntreprise.setString(1, scanner.next());
+			System.out.println("Veuillez entrez le nouveau mot-celf : ");
+			encoderMotClef.setString(1, scanner.next());
 
-			encoderEntreprise.execute();
-			ResultSet rs = encoderEntreprise.getResultSet();
+			encoderMotClef.execute();
+			ResultSet rs = encoderMotClef.getResultSet();
 
 			while (rs.next()) {
 				System.out.println("Code nouveau mot clef creer : " + rs.getString(1));
@@ -178,6 +179,7 @@ public class ApplicationProfesseur {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		applicationCentrale();
 	}
 
 	private void offresStageNV() {
@@ -187,17 +189,25 @@ public class ApplicationProfesseur {
 			ResultSet rs = offresStageNV.getResultSet();
 
 			while (rs.next()) {
-				System.out.println(rs.getString(1));
+				System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5));
 			}
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les offres de stage non valider !");
 			e.printStackTrace();
 			System.exit(1);
 		}
+		applicationCentrale();
 	}
 
 	private void validerStage() {
+		/*try {
 
+		}catch (SQLException e){
+
+		}
+
+		 */
+		applicationCentrale();
 	}
 
 	private void offresStageVA() {
@@ -214,6 +224,7 @@ public class ApplicationProfesseur {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		applicationCentrale();
 	}
 
 	private void etudiantsSansStage() {
@@ -230,6 +241,7 @@ public class ApplicationProfesseur {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		applicationCentrale();
 	}
 
 	private void offresStageAT() {
@@ -246,6 +258,7 @@ public class ApplicationProfesseur {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		applicationCentrale();
 	}
 
 	private void quitterProgramme() {
