@@ -10,6 +10,8 @@ public class ApplicationEntreprise {
     private PreparedStatement ajouterMotClefs = null;
     private PreparedStatement voirSesOffres = null;
     private PreparedStatement voirSesCandidature = null;
+    private PreparedStatement selectionnerCandidat = null;
+    private PreparedStatement annulerCandidature = null;
     private Scanner scanner = new Scanner(System.in);
     private String idEntreprise;
 
@@ -33,6 +35,8 @@ public class ApplicationEntreprise {
             ajouterMotClefs = connection.prepareStatement("SELECT Projet_BD2.ajouterMotClef(?,?,?);");
             voirSesOffres = connection.prepareStatement("SELECT * FROM Projet_BD2.voir_offres_des_stages WHERE code_entreprise = ?;");
             voirSesCandidature = connection.prepareStatement("SELECT * FROM Projet_BD2.voir_candidatures, Projet_BD2.stages st WHERE st.code_stage = ?;");
+            selectionnerCandidat = connection.prepareStatement("SELECT Projet_BD2.selectionner_etudiant(?,?);");
+            annulerCandidature = connection.prepareStatement("SELECT Projet_BD2.annuler_offre_stage(?,?);");
         } catch (SQLException e) {
             System.out.println("Impossible de préparer la requête !");
             System.exit(1);
@@ -224,7 +228,36 @@ public class ApplicationEntreprise {
         }
     }
     private void selectionnerEtudiant() {
+        System.out.println("***************** Sélectionner un étudiant pour une de ses offres de stage *****************");
+        System.out.println("Veuillez entrer le code de l'offre de stage :");
+        String code = scanner.nextLine();
+        System.out.println("Veuillez entrer l'email de l'étudiant :");
+        String email = scanner.nextLine();
+        try {
+            selectionnerCandidat.setString(1, code);
+            selectionnerCandidat.setString(2, email);
+            selectionnerCandidat.execute();
+            System.out.println("Etudiant sélectionné !");
+            applicationCentrale();
+        } catch (SQLException se) {
+            System.out.println("Erreur lors de l’insertion !");
+            se.printStackTrace();
+            System.exit(1);
+        }
     }
     private void annulerOffreDeStage() {
+        System.out.println("***************** Annuler une offre de stage *****************");
+        System.out.println("Veuillez entrer le code de l'offre de stage :");
+        String code = scanner.nextLine();
+        try {
+            annulerCandidature.setString(1, code);
+            annulerCandidature.setString(2, idEntreprise);
+            annulerCandidature.execute();
+            System.out.println("Offre de stage annulée !");
+            applicationCentrale();
+        } catch (SQLException se) {
+            System.out.println("Erreur lors de l’insertion !");
+            se.printStackTrace();
+            System.exit(1);
     }
 }
