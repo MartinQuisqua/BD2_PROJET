@@ -97,6 +97,7 @@ public class ApplicationEntreprise {
 		System.out.println("5 :Voir les candidatures pour une de ses offres de stages");
 		System.out.println("6 :Sélectionner un étudiant pour une de ses offres de stage");
 		System.out.println("7 :Annuler une offre de stage en donnant son code");
+		System.out.println("autre : quitter le programme");
 		int choix = scanner.nextInt();
 		scanner.nextLine();
 		switch (choix) {
@@ -121,9 +122,10 @@ public class ApplicationEntreprise {
 			case 7:
 				annulerOffreDeStage();
 				break;
+			default:
+				quitterProgramme();
+				break;
 		}
-
-
 	}
 
 
@@ -140,12 +142,11 @@ public class ApplicationEntreprise {
 			encoderOffreStage.setString(3, semestre);
 			encoderOffreStage.executeQuery();
 			System.out.println("Offre de stage ajoutée !");
-			applicationCentrale();
 		} catch (SQLException se) {
 			System.out.println("Erreur lors de l’insertion !");
 			se.printStackTrace();
-			System.exit(1);
 		}
+		applicationCentrale();
 	}
 
 	private void voirLesMotsCLefs() {
@@ -158,11 +159,11 @@ public class ApplicationEntreprise {
 				System.out.printf("|  %-10s  | \n", rs.getString("mot")); // Utilisez le nom de la colonne "mot"
 			}
 			System.out.println("_______________");
-			applicationCentrale();
 		} catch (SQLException se) {
 			se.printStackTrace();
 			System.out.println("Aucun cours disponible");
 		}
+		applicationCentrale();
 	}
 
 	private void ajouterMotClefs() {
@@ -175,14 +176,13 @@ public class ApplicationEntreprise {
 			ajouterMotClefs.setString(1, code);
 			ajouterMotClefs.setString(2, motClef);
 			ajouterMotClefs.setString(3, idEntreprise);
-			ajouterMotClefs.executeQuery();
+			ajouterMotClefs.execute();
 			System.out.println("Mot clé ajouté !");
-			applicationCentrale();
 		} catch (SQLException se) {
 			System.out.println("Erreur lors de l’insertion !");
 			se.printStackTrace();
-			System.exit(1);
 		}
+		applicationCentrale();
 	}
 
 	private void voirSesOffres() {
@@ -198,11 +198,11 @@ public class ApplicationEntreprise {
 				System.out.printf("  |   %-7s  |   %-10s   |  %-5s | %-10s | %-10s                    | %-10s |\n", rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
 			}
 			System.out.println("____________________________");
-			applicationCentrale();
 		} catch (SQLException se) {
 			se.printStackTrace();
 			System.out.println("Aucun cours disponible");
 		}
+		applicationCentrale();
 	}
 
 	private void voirSesCandidature() {
@@ -224,11 +224,11 @@ public class ApplicationEntreprise {
 				System.out.printf("  | %-5s | %-7s | %-6s | %-10s | %-4s |\n", rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
 			}
 			System.out.println("_______________________________________________________");
-			applicationCentrale();
 		} catch (SQLException se) {
 			se.printStackTrace();
 			System.out.println("Aucun cours disponible");
 		}
+		applicationCentrale();
 	}
 
 	private void selectionnerEtudiant() {
@@ -242,12 +242,11 @@ public class ApplicationEntreprise {
 			selectionnerCandidat.setString(2, email);
 			selectionnerCandidat.execute();
 			System.out.println("Etudiant sélectionné !");
-			applicationCentrale();
 		} catch (SQLException se) {
 			System.out.println("Erreur lors de l’insertion !");
 			se.printStackTrace();
-			System.exit(1);
 		}
+		applicationCentrale();
 	}
 
 	private void annulerOffreDeStage() {
@@ -259,11 +258,15 @@ public class ApplicationEntreprise {
 			annulerCandidature.setString(2, idEntreprise);
 			annulerCandidature.execute();
 			System.out.println("Offre de stage annulée !");
-			applicationCentrale();
 		} catch (SQLException se) {
 			System.out.println("Erreur lors de l’insertion !");
 			se.printStackTrace();
-			System.exit(1);
 		}
+		applicationCentrale();
+	}
+
+	private void quitterProgramme() {
+		System.out.println("merci d'avoir tt fais maintenant bare toi !");
+		System.exit(1);
 	}
 }
