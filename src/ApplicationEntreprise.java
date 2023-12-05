@@ -2,7 +2,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class ApplicationEntreprise {
-	private String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Clqc@Di!o556i";
+	private String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Mama@0202";
 	private Connection connection = null;
 	private PreparedStatement connexionEntrepriseSql = null;
 	private PreparedStatement encoderOffreStage = null;
@@ -35,7 +35,7 @@ public class ApplicationEntreprise {
 			ajouterMotClefs = connection.prepareStatement("SELECT Projet_BD2.ajouterMotClef(?,?,?);");
 			voirSesOffres = connection.prepareStatement("SELECT * FROM Projet_BD2.voirOffresDeStages WHERE code_entreprise = ?;");
 			voirSesCandidature = connection.prepareStatement("SELECT * FROM Projet_BD2.voirCandidatures, Projet_BD2.stages st WHERE st.code_stage = ?;");
-			selectionnerCandidat = connection.prepareStatement("SELECT Projet_BD2.selectionnerEtudiant(?,?);");
+			selectionnerCandidat = connection.prepareStatement("SELECT Projet_BD2.selectionnerEtudiant(?,?,?);");
 			annulerCandidature = connection.prepareStatement("SELECT Projet_BD2.annulerOffreStage(?,?);");
 		} catch (SQLException e) {
 			System.out.println("Impossible de préparer la requête !");
@@ -240,6 +240,7 @@ public class ApplicationEntreprise {
 		try {
 			selectionnerCandidat.setString(1, code);
 			selectionnerCandidat.setString(2, email);
+			selectionnerCandidat.setString(3, idEntreprise);
 			selectionnerCandidat.execute();
 			System.out.println("Etudiant sélectionné !");
 		} catch (SQLException se) {
