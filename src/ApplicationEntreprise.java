@@ -2,7 +2,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class ApplicationEntreprise {
-	private String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Mama@0202";
+	private String url = "jdbc:postgresql://localhost:5432/";
 	private Connection connection = null;
 	private PreparedStatement connexionEntrepriseSql = null;
 	private PreparedStatement encoderOffreStage = null;
@@ -22,12 +22,15 @@ public class ApplicationEntreprise {
 			System.out.println("Driver PostgreSQL manquant !");
 			System.exit(1);
 		}
+
 		try {
-			connection = DriverManager.getConnection(url);
+			System.out.println("Entrez votre mot de passe postgres");
+			connection = DriverManager.getConnection(url, "postgres", scanner.nextLine());
 		} catch (SQLException e) {
 			System.out.println("Impossible de joindre le server !");
 			System.exit(1);
 		}
+
 		try {
 			connexionEntrepriseSql = connection.prepareStatement("SELECT mdp_hash, code FROM Projet_BD2.entreprises WHERE email = ?;");
 			encoderOffreStage = connection.prepareStatement("SELECT Projet_BD2.ajouterStage(?,?,?);");
