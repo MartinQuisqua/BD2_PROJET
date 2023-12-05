@@ -120,11 +120,9 @@ public class ApplicationProfesseur {
 			while (rs.next()) {
 				System.out.println("id nouvelle etudiant creer : " + rs.getString(1));
 			}
-
 		} catch (SQLException e) {
 			System.out.println("Impossible d'encoder un étudiant !");
 			e.printStackTrace();
-			System.exit(1);
 		}
 		applicationCentrale();
 	}
@@ -157,7 +155,6 @@ public class ApplicationProfesseur {
 		} catch (SQLException e) {
 			System.out.println("Impossible d'encoder un entreprise !");
 			e.printStackTrace();
-			System.exit(1);
 		}
 		applicationCentrale();
 	}
@@ -177,7 +174,6 @@ public class ApplicationProfesseur {
 		} catch (SQLException e) {
 			System.out.println("Impossible d'encoder le mot clef !");
 			e.printStackTrace();
-			System.exit(1);
 		}
 		applicationCentrale();
 	}
@@ -194,7 +190,6 @@ public class ApplicationProfesseur {
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les offres de stage non valider !");
 			e.printStackTrace();
-			System.exit(1);
 		}
 		applicationCentrale();
 	}
@@ -214,7 +209,6 @@ public class ApplicationProfesseur {
 		} catch (SQLException e) {
 			System.out.println("Impossible d'encoder un entreprise !");
 			e.printStackTrace();
-			System.exit(1);
 		}
 		applicationCentrale();
 	}
@@ -231,7 +225,6 @@ public class ApplicationProfesseur {
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les offres de stage valider !");
 			e.printStackTrace();
-			System.exit(1);
 		}
 		applicationCentrale();
 	}
@@ -248,7 +241,6 @@ public class ApplicationProfesseur {
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les etudiant sans stage !");
 			e.printStackTrace();
-			System.exit(1);
 		}
 		applicationCentrale();
 	}
@@ -265,7 +257,6 @@ public class ApplicationProfesseur {
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les offres de stage attribuer !");
 			e.printStackTrace();
-			System.exit(1);
 		}
 		applicationCentrale();
 	}
