@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class ApplicationProfesseur {
 
-	private String url = "jdbc:postgresql://localhost:5432/";
+	private String url = "jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans";
 	private Connection connection = null;
 	private PreparedStatement encoderEtudiant = null;
 	private PreparedStatement encoderEntreprise = null;
@@ -24,8 +24,7 @@ public class ApplicationProfesseur {
 		}
 
 		try {
-			System.out.println("Entrez votre mot de passe postgres");
-			connection = DriverManager.getConnection(url, "postgres", scanner.nextLine());
+			connection = DriverManager.getConnection(url, "nicolasheymans", "4N0ZKYWCU");
 		} catch (SQLException e) {
 			System.out.println("Impossible de joindre le server !");
 			System.exit(1);
@@ -203,7 +202,7 @@ public class ApplicationProfesseur {
 			ResultSet rs = validerStage.getResultSet();
 
 			while (rs.next()) {
-				System.out.println("Code nouveau mot clef creer : " + rs.getString(1));
+				System.out.println("Id stage valider : " + rs.getString(1));
 			}
 
 		} catch (SQLException e) {
