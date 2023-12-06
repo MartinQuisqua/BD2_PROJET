@@ -2,7 +2,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class ApplicationEtudiant {
-    private String url = "jdbc:postgresql://localhost:5432/";
+    private String url = "jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans";
     private Connection connection = null;
     private PreparedStatement connexionEtudiant = null;
     private PreparedStatement chercherOffresStageValidees = null;
@@ -20,11 +20,9 @@ public class ApplicationEtudiant {
             System.out.println("Driver PostgreSQL manquant !");
             System.exit(1);
         }
-        System.out.println("Veuillez introduire votre mot de passe : ");
-        String mdpPostgres = scanner.nextLine();
 
         try {
-            connection = DriverManager.getConnection(url, "postgres", mdpPostgres);
+            connection = DriverManager.getConnection(url, "gauthiercollard", "MIV4S2DP6");
         } catch (
                 SQLException e) {
             System.out.println("Impossible de joindre le server !");
@@ -32,9 +30,9 @@ public class ApplicationEtudiant {
         }
 
         try {
-            chercherOffresStageValidees = connection.prepareStatement("SELECT * FROM Projet_BD2.afficherOffresStageValidees WHERE id_etudiant = ?;");
-            chercherOffresStageMotCle = connection.prepareStatement("SELECT * FROM Projet_BD2.rechercheOffresStageMotCle WHERE id_etudiant = ? AND mot_cle = ?;");
-            poserCandidature = connection.prepareStatement("SELECT Projet_BD2.poser_candidature(?,?,?)");
+            chercherOffresStageValidees = connection.prepareStatement("SELECT * FROM Projet_BD2.offresStageValideesParEtudiant WHERE id_etudiant = ?;");
+            chercherOffresStageMotCle = connection.prepareStatement("SELECT * FROM Projet_BD2.rechercheOffresStageMotClef WHERE id_etudiant = ? AND mot_clef = ?;");
+            poserCandidature = connection.prepareStatement("SELECT Projet_BD2.poserCandidature(?,?,?)");
             chercherOffresCandidature = connection.prepareStatement("SELECT * FROM Projet_BD2.offresCandidature WHERE etudiant = ?;");
             annulerCandidature = connection.prepareStatement("SELECT Projet_BD2.annuler_candidature(?,?)");
             connexionEtudiant = connection.prepareStatement("SELECT mdp_hash, id_etudiant FROM Projet_BD2.etudiants WHERE email = ?;");
@@ -127,7 +125,7 @@ public class ApplicationEtudiant {
             System.out.println("Offres de stage validees");
             System.out.println("_______________");
             while (rs.next()) {
-                System.out.println("IdStage : " + rs.getInt(1) + " | nomEntreprise :  " + rs.getString(2) + " | adresseEntreprise : " + rs.getString(3) + " | description : " + rs.getString(5) + " | motsClefs : " + rs.getString(6));
+                System.out.println("IdStage : " + rs.getString(1) + " | nomEntreprise :  " + rs.getString(2) + " | adresseEntreprise : " + rs.getString(3) + " | description : " + rs.getString(5) + " | motsClefs : " + rs.getString(6));
             }
             System.out.println("_______________");
             applicationCentrale();
@@ -169,6 +167,7 @@ public class ApplicationEtudiant {
 
             poserCandidature.setString(1, codeStage);
             poserCandidature.setString(2, motivations);
+            poserCandidature.setInt(3, idEtudiant);
 
             poserCandidature.execute();
             ResultSet rs = poserCandidature.getResultSet();
