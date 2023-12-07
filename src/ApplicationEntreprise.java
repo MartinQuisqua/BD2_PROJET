@@ -37,7 +37,7 @@ public class ApplicationEntreprise {
 			affichageMotClefs = connection.prepareStatement("SELECT * FROM Projet_BD2.affichageMotsClefs;");
 			ajouterMotClefs = connection.prepareStatement("SELECT Projet_BD2.ajouterMotClef(?,?,?);");
 			voirSesOffres = connection.prepareStatement("SELECT * FROM Projet_BD2.voirOffresDeStages WHERE code_entreprise = ?;");
-			voirSesCandidature = connection.prepareStatement("SELECT * FROM Projet_BD2.voirCandidatures, Projet_BD2.stages st WHERE st.code_stage = ?;");
+			voirSesCandidature = connection.prepareStatement(" SELECT * FROM Projet_BD2.voirCandidatures WHERE code_stage = ?");
 			selectionnerCandidat = connection.prepareStatement("SELECT Projet_BD2.selectionnerEtudiant(?,?,?);");
 			annulerCandidature = connection.prepareStatement("SELECT Projet_BD2.annulerOffreStage(?,?);");
 		} catch (SQLException e) {
