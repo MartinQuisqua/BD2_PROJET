@@ -34,7 +34,7 @@ public class ApplicationEtudiant {
             chercherOffresStageMotCle = connection.prepareStatement("SELECT * FROM Projet_BD2.rechercheOffresStageMotClef WHERE id_etudiant = ? AND mot_clef = ?;");
             poserCandidature = connection.prepareStatement("SELECT Projet_BD2.poserCandidature(?,?,?);");
             chercherOffresCandidature = connection.prepareStatement("SELECT * FROM Projet_BD2.offresCandidature WHERE etudiant = ?;");
-            annulerCandidature = connection.prepareStatement("SELECT Projet_BD2.annuler_candidature(?,?);");
+            annulerCandidature = connection.prepareStatement("SELECT Projet_BD2.annulerCandidature(?,?);");
             connexionEtudiant = connection.prepareStatement("SELECT mdp_hash, id_etudiant FROM Projet_BD2.etudiants WHERE email = ?;");
         } catch (SQLException e) {
             System.out.println("Impossible de prÃ©parer la requÃªte !");
