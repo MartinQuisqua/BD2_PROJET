@@ -31,14 +31,14 @@ public class ApplicationProfesseur {
 		}
 
 		try {
-			encoderEtudiant = connection.prepareStatement("SELECT Projet_BD2.encoderEtudiant(?, ?, ?, ?, ?)");
-			encoderEntreprise = connection.prepareStatement("SELECT  Projet_BD2.encoderEntreprise(?, ?, ?, ?, ?)");
-			encoderMotClef = connection.prepareStatement("SELECT Projet_BD2.encoderMotClef(?)");
-			offresStageNV = connection.prepareStatement("SELECT * FROM Projet_BD2.offresStageNV");
-			validerStage = connection.prepareStatement("SELECT  Projet_BD2.validerStage(?)");
-			offresStageVA = connection.prepareStatement("SELECT * FROM Projet_BD2.offresStageVA");
-			etudiantsSansStage = connection.prepareStatement("SELECT * FROM Projet_BD2.etudiantsSansStage");
-			offresStageAT = connection.prepareStatement("SELECT * FROM Projet_BD2.offresStageAT");
+			encoderEtudiant = connection.prepareStatement("SELECT Projet_BD2.encoderEtudiant(?, ?, ?, ?, ?);");
+			encoderEntreprise = connection.prepareStatement("SELECT  Projet_BD2.encoderEntreprise(?, ?, ?, ?, ?);");
+			encoderMotClef = connection.prepareStatement("SELECT Projet_BD2.encoderMotClef(?);");
+			offresStageNV = connection.prepareStatement("SELECT * FROM Projet_BD2.offresStageNV;");
+			validerStage = connection.prepareStatement("SELECT  Projet_BD2.validerStage(?);");
+			offresStageVA = connection.prepareStatement("SELECT * FROM Projet_BD2.offresStageVA;");
+			etudiantsSansStage = connection.prepareStatement("SELECT * FROM Projet_BD2.etudiantsSansStage;");
+			offresStageAT = connection.prepareStatement("SELECT * FROM Projet_BD2.offresStageAT;");
 		} catch (SQLException e) {
 			System.out.println("Impossible de préparer la requête !");
 			System.exit(1);
