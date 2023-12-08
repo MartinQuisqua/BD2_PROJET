@@ -128,11 +128,12 @@ public class ApplicationEtudiant {
                 System.out.println("IdStage : " + rs.getString(1) + " | nomEntreprise :  " + rs.getString(2) + " | adresseEntreprise : " + rs.getString(3) + " | description : " + rs.getString(5) + " | motsClefs : " + rs.getString(6));
             }
             System.out.println("_______________");
-            applicationCentrale();
+
         } catch (SQLException se) {
             se.printStackTrace();
             System.out.println("Impossible de voir les offres de stage validées !");
         }
+        applicationCentrale();
     }
 
     private void chercherOffresStageMotCle() {
@@ -148,14 +149,15 @@ public class ApplicationEtudiant {
             System.out.println("Offres de stage par mot clÃ©");
             System.out.println("_______________");
             while (rs.next()) {
-                System.out.println("IdStage : " + rs.getInt(1) + " | nomEntreprise :  " + rs.getString(2) + " | adresseEntreprise : " + rs.getString(3) + " | description : " + rs.getString(5) + " | motsClefs : " + rs.getString(6));
+                System.out.println("CodeStage : " + rs.getString(1) + " | nomEntreprise :  " + rs.getString(2) + " | adresseEntreprise : " + rs.getString(3) + " | description : " + rs.getString(4) + " | motsClefs : " + rs.getString(5));
             }
             System.out.println("_______________");
-            applicationCentrale();
+
         } catch (SQLException se) {
             se.printStackTrace();
             System.out.println("Impossible de voir les offres de stage validées par mot clé!");
         }
+        applicationCentrale();
     }
 
     private void poserCandidature() {
@@ -179,24 +181,26 @@ public class ApplicationEtudiant {
             se.printStackTrace();
             System.out.println("Impossible de poser la candidature !");
         }
+        applicationCentrale();
     }
 
     private void voirOffresCandidature() {
         try {
-            chercherOffresStageValidees.setInt(1, idEtudiant);
-            chercherOffresStageValidees.execute();
-            ResultSet rs = chercherOffresStageValidees.getResultSet(); // Utilisez executeQuery au lieu de getResultSet
+            chercherOffresCandidature.setInt(1, idEtudiant);
+            chercherOffresCandidature.execute();
+            ResultSet rs = chercherOffresCandidature.getResultSet(); // Utilisez executeQuery au lieu de getResultSet
             System.out.println("Offres de stage pour lesquelles l'étudiant est candidat");
             System.out.println("_______________");
             while (rs.next()) {
-                System.out.println("Code de l'offre de stage : " + rs.getInt(1) + " | nomEntreprise :  " + rs.getString(2) + " | etatCandidature : " + rs.getString(3));
+                System.out.println("Code de l'offre de stage : " + rs.getString(3) + " | nomEntreprise :  " + rs.getString(4) + " | etatCandidature : " + rs.getString(5));
             }
             System.out.println("_______________");
-            applicationCentrale();
+
         } catch (SQLException se) {
             se.printStackTrace();
             System.out.println("Impossible de voir les offres de stage pour lesquelles l'étudiant est candidat !");
         }
+        applicationCentrale();
     }
 
     private void annulerCandidature() {
@@ -204,11 +208,11 @@ public class ApplicationEtudiant {
             System.out.println("Veuillez introduire le code de l'offre de stage pour laquelle vous voulez annuler votre candidature : ");
             String codeStage = scanner.nextLine();
 
-            annulerCandidature.setInt(1, idEtudiant);
-            annulerCandidature.setString(2, codeStage);
+            annulerCandidature.setString(1, codeStage);
+            annulerCandidature.setInt(2, idEtudiant);
 
-            poserCandidature.execute();
-            ResultSet rs = poserCandidature.getResultSet();
+            annulerCandidature.execute();
+            ResultSet rs = annulerCandidature.getResultSet();
 
             while (rs.next()) {
                 System.out.println("Candidature annulée pour le stage dont l'ID est : " + rs.getString(1));
@@ -217,6 +221,7 @@ public class ApplicationEtudiant {
             se.printStackTrace();
             System.out.println("Impossible d'annuler la candidature !");
         }
+        applicationCentrale();
     }
 
     private void quitterProgramme() {

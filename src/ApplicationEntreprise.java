@@ -217,15 +217,15 @@ public class ApplicationEntreprise {
 			voirSesCandidature.execute();
 			ResultSet rs = voirSesCandidature.getResultSet();
 			if (!rs.next()) {
-				System.out.println("Aucune candidature pour cette offre de stage");
+				System.out.println("Il n'y a pas de candidatures pour cette offre ou vous n'avez pas d'offre ayant ce code");
 				applicationCentrale();
 			}
 			System.out.println("_______________________________________________________");
-			System.out.println("  |  etat  |  nom  |  prenom  |  email  |  motivation  |");
+			System.out.println("  |  etat  |  nom  |  prenom  |  email  |  motivations  |");
 			System.out.println("_______________________________________________________");
-			while (rs.next()) {
-				System.out.printf("  | %-5s | %-7s | %-6s | %-10s | %-4s |\n", rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
-			}
+			do {
+				System.out.printf("  | %-5s | %-7s | %-6s | %-10s | %-4s |\n", rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+			} while (rs.next());
 			System.out.println("_______________________________________________________");
 		} catch (SQLException se) {
 			se.printStackTrace();
