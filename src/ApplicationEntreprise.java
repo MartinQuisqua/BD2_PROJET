@@ -57,10 +57,10 @@ public class ApplicationEntreprise {
 		System.out.println("***************** Connexion entreprise *****************");
 		System.out.println("Veuillez entrer votre nom d'utilisateur");
 		//String email = "Entreprise3@gmail.test";
-		String email = scanner.nextLine(); // TODO: 07/05/2021 "
+		String email = scanner.nextLine();
 		System.out.println("Veuillez entrer votre mot de passe");
 		String passwordUser = scanner.nextLine();
-		// String passwordUser = "Entreprisetest"; // TODO: 07/05/2021
+		// String passwordUser = "Entreprisetest";
 
 		try {
 			connexionEntrepriseSql.setString(1, email);
@@ -198,7 +198,7 @@ public class ApplicationEntreprise {
 			System.out.println("  | code stage |  Description   |Semestre|    etat     |nombre candidature en attentre |     nom       |");
 			System.out.println("_______________________________________________________________________________________________________|");
 			while (rs.next()) {
-				System.out.printf("  |   %-7s  |   %-10s   |  %-5s | %-10s | %-10s                    | %-10s |\n", rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+				System.out.printf("  |   %-7s  |   %-10s   |  %-5s | %-10s | %-10s                    | %-10s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7));
 			}
 			System.out.println("____________________________");
 		} catch (SQLException se) {
