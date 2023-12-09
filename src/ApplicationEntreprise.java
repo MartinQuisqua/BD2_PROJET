@@ -192,11 +192,12 @@ public class ApplicationEntreprise {
 			voirSesOffres.execute();
 			ResultSet rs = voirSesOffres.getResultSet();
 			System.out.println("  Offre de stage");
+			// code stage |  Description   |Semestre|    etat     |nombre candidature en attentre |     nom
 			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.println("  | code stage |  Description   |Semestre|    etat     |nombre candidature en attentre |     nom       |");
+			System.out.printf(" | %-10s | %-20s | %-10s | %-11s | %-20s | %-10s |\n", "code stage", "Description", "Semestre", "etat", "nombre candidature en attentre", "nom");
 			System.out.println("_______________________________________________________________________________________________________|");
 			while (rs.next()) {
-				System.out.printf("  |   %-7s  |   %-10s   |  %-5s | %-10s | %-10s                    | %-10s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7));
+				System.out.printf(" | %-10s | %-20s | %-10s | %-11s | %-20s | %-10s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7));
 			}
 			System.out.println("_______________________________________________________________________________________________________|");
 		} catch (SQLException se) {
@@ -217,13 +218,14 @@ public class ApplicationEntreprise {
 				System.out.println("Il n'y a pas de candidatures pour cette offre ou vous n'avez pas d'offre ayant ce code");
 				applicationCentrale();
 			}
-			System.out.println("_______________________________________________________");
-			System.out.println("  |  etat  |  nom  |  prenom  |  email  |  motivations  |");
+			// etat, nom, prenom, email, motivations
+			System.out.println("_______________________________________________________________________________________________________");
+			System.out.printf(" | %-10s | %-10s | %-10s | %-20s | %-20s |\n", "etat", "nom", "prenom", "email", "motivations");
 			System.out.println("_______________________________________________________");
 			do {
-				System.out.printf("  | %-5s | %-7s | %-6s | %-10s | %-4s |\n", rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+				System.out.printf(" | %-10s | %-10s | %-10s | %-20s | %-20s |\n", rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
 			} while (rs.next());
-			System.out.println("_______________________________________________________");
+			System.out.println("_______________________________________________________________________________________________________");
 		} catch (SQLException se) {
 			System.out.println("Aucun cours disponible");
 		}
