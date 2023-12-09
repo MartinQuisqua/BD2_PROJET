@@ -2,7 +2,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class ApplicationEtudiant {
-    private String url = "jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans";
+    private String url = "jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans"; //jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans
     private Connection connection = null;
     private PreparedStatement connexionEtudiant = null;
     private PreparedStatement chercherOffresStageValidees = null;
@@ -22,7 +22,7 @@ public class ApplicationEtudiant {
         }
 
         try {
-            connection = DriverManager.getConnection(url, "gauthiercollard", "MIV4S2DP6");
+            connection = DriverManager.getConnection(url, "gauthiercollard","MIV4S2DP6");
         } catch (
                 SQLException e) {
             System.out.println("Impossible de joindre le server !");
@@ -121,10 +121,11 @@ public class ApplicationEtudiant {
             chercherOffresStageValidees.setInt(1, idEtudiant);
             chercherOffresStageValidees.execute();
             ResultSet rs = chercherOffresStageValidees.getResultSet(); // Utilisez executeQuery au lieu de getResultSet
-            System.out.println("Offres de stage validees");
-            System.out.println("_______________");
+            System.out.println("_______________________________________________________________________________________________________|");
+            System.out.printf(" | %-10s | %-20s | %-20s | %-20s | %-20s |\n", "Code stage", "Nom de l'entreprise","Adresse", "Description", "Mots-clefs");
+            System.out.println("_______________________________________________________________________________________________________|");
             while (rs.next()) {
-                System.out.println("IdStage : " + rs.getString(1) + " | nomEntreprise :  " + rs.getString(2) + " | adresseEntreprise : " + rs.getString(3) + " | description : " + rs.getString(5) + " | motsClefs : " + rs.getString(6));
+                System.out.printf(" | %-10s | %-20s | %-20s | %-20s | %-20s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
             }
             System.out.println("_______________");
 
@@ -145,10 +146,11 @@ public class ApplicationEtudiant {
 
             chercherOffresStageMotCle.execute();
             ResultSet rs = chercherOffresStageMotCle.getResultSet(); // Utilisez executeQuery au lieu de getResultSet
-            System.out.println("Offres de stage par mot clÃ©");
-            System.out.println("_______________");
+            System.out.println("_______________________________________________________________________________________________________|");
+            System.out.printf(" | %-10s | %-20s | %-20s | %-20s | %-20s |\n", "Code stage", "Nom de l'entreprise","Adresse", "Description", "Mots-clefs");
+            System.out.println("_______________________________________________________________________________________________________|");
             while (rs.next()) {
-                System.out.println("CodeStage : " + rs.getString(1) + " | nomEntreprise :  " + rs.getString(2) + " | adresseEntreprise : " + rs.getString(3) + " | description : " + rs.getString(4) + " | motsClefs : " + rs.getString(5));
+                System.out.printf(" | %-10s | %-20s | %-20s | %-20s | %-20s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
             }
             System.out.println("_______________");
 
@@ -183,15 +185,16 @@ public class ApplicationEtudiant {
     }
 
     private void voirOffresCandidature() {
-        System.out.println("***************** Voir les offres de stage pour lesquels lâ€™Ã©tudiant a posÃ© sa candidature *****************");
+        System.out.println("***************** Voir les offres de stage pour lesquelles l'etudiant a pose sa candidature *****************");
         try {
             chercherOffresCandidature.setInt(1, idEtudiant);
             chercherOffresCandidature.execute();
             ResultSet rs = chercherOffresCandidature.getResultSet(); // Utilisez executeQuery au lieu de getResultSet
-            System.out.println("Offres de stage pour lesquelles l'étudiant est candidat");
-            System.out.println("_______________");
+            System.out.println("_______________________________________________________________________________________________________|");
+            System.out.printf(" | %-15s | %-20s | %-15s |\n", "Code stage", "Nom de l'entreprise","Etat candidature");
+            System.out.println("_______________________________________________________________________________________________________|");
             while (rs.next()) {
-                System.out.println("Code de l'offre de stage : " + rs.getString(3) + " | nomEntreprise :  " + rs.getString(4) + " | etatCandidature : " + rs.getString(5));
+                System.out.printf(" | %-15s | %-20s | %-15s |\n", rs.getString(3), rs.getString(4), rs.getString(5));
             }
             System.out.println("_______________");
 
