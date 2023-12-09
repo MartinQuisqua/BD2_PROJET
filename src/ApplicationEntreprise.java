@@ -191,16 +191,13 @@ public class ApplicationEntreprise {
 			voirSesOffres.setString(1, idEntreprise);
 			voirSesOffres.execute();
 			ResultSet rs = voirSesOffres.getResultSet();
-<<<<<<< HEAD
 			System.out.println("  Offre de stage");
 			// code stage |  Description   |Semestre|    etat     |nombre candidature en attentre |     nom
 			System.out.println("_______________________________________________________________________________________________________|");
 			System.out.printf(" | %-10s | %-20s | %-10s | %-11s | %-20s | %-10s |\n", "code stage", "Description", "Semestre", "etat", "nombre candidature en attentre", "nom");
-=======
 			System.out.println(" Offre de stage");
 			System.out.println("_______________________________________________________________________________________________________|");
 			System.out.println("  | Code stage |  Description   |Semestre|    Etat     |Nombre candidature en attentre |     Nom       |");
->>>>>>> 2660566d009d7cb387298204b1325cc28f9b7e49
 			System.out.println("_______________________________________________________________________________________________________|");
 			while (rs.next()) {
 				System.out.printf(" | %-10s | %-20s | %-10s | %-11s | %-20s | %-10s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7));
