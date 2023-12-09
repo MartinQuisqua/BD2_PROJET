@@ -198,7 +198,7 @@ public class ApplicationEntreprise {
 			while (rs.next()) {
 				System.out.printf("  |   %-7s  |   %-10s   |  %-5s | %-10s | %-10s                    | %-10s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7));
 			}
-			System.out.println("____________________________");
+			System.out.println("_______________________________________________________________________________________________________|");
 		} catch (SQLException se) {
 			System.out.println("Erreur lors de l’insertion !" + se.getMessage());
 		}
