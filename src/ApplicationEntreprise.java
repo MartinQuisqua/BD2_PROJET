@@ -26,7 +26,7 @@ public class ApplicationEntreprise {
 		}
 
 		try {
-			//connection = DriverManager.getConnection(url, "martinquisquater", "SJBD0H4YR");
+			//connection = DriverManager.getConnection(url, "postgres", "");
 			connection = DriverManager.getConnection(url, "martinquisquater", "SJBD0H4YR");
 		} catch (SQLException e) {
 			System.out.println("Impossible de joindre le server !");

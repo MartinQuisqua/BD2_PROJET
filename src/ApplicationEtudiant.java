@@ -2,7 +2,8 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class ApplicationEtudiant {
-    private String url = "jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans"; //jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans
+    //private String url = "jdbc:postgresql://localhost:5432/postgres";
+    private String url = "jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans";
     private Connection connection = null;
     private PreparedStatement connexionEtudiant = null;
     private PreparedStatement chercherOffresStageValidees = null;
@@ -22,6 +23,7 @@ public class ApplicationEtudiant {
         }
 
         try {
+            //connection = DriverManager.getConnection(url, "postgres", "");
             connection = DriverManager.getConnection(url, "gauthiercollard","MIV4S2DP6");
         } catch (
                 SQLException e) {

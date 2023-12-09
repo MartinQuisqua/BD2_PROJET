@@ -2,7 +2,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class ApplicationProfesseur {
-
+	//private String url = "jdbc:postgresql://localhost:5432/postgres";
 	private String url = "jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans";
 	private Connection connection = null;
 	private PreparedStatement encoderEtudiant = null;
@@ -24,6 +24,7 @@ public class ApplicationProfesseur {
 		}
 
 		try {
+			//connection = DriverManager.getConnection(url, "postgres", "");
 			connection = DriverManager.getConnection(url, "nicolasheymans", "4N0ZKYWCU");
 		} catch (SQLException e) {
 			System.out.println("Impossible de joindre le server !");
