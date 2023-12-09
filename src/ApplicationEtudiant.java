@@ -89,8 +89,8 @@ public class ApplicationEtudiant {
         System.out.println("1 :Voir offres de stage validees");
         System.out.println("2 :Rechercher une offre de stage par mot clÃ©");
         System.out.println("3 :Poser sa candidature pour un stage");
-        System.out.println("4 :Voir les offres de stage pour lesquels lâ€™Ã©tudiant a posÃ© sa candidature");
-        System.out.println("5 :Annuler une candidature en prÃ©cisant le code de lâ€™offre de stage");
+        System.out.println("4 :Voir les offres de stage pour lesquelles l'etudiant a pose sa candidature");
+        System.out.println("5 :Annuler une candidature en precisant le code de l'offre de stage");
         int choix = scanner.nextInt();
         scanner.nextLine();
         switch (choix) {
@@ -217,7 +217,7 @@ public class ApplicationEtudiant {
                 System.out.println("Candidature annulée pour le stage dont l'ID est : " + rs.getString(1));
             }
         } catch (SQLException se) {
-            System.out.println("Impossible D'annuler le stage " + se.getMessage());
+            System.out.println("Impossible d'annuler le stage " + se.getMessage());
         }
         applicationCentrale();
     }

@@ -94,7 +94,7 @@ public class ApplicationEntreprise {
 	}
 
 	public void applicationCentrale() {
-		System.out.println("***************** application entreprise de " + idEntreprise + " *****************");
+		System.out.println("***************** Application entreprise de " + idEntreprise + " *****************");
 		System.out.println("1 :Encoder une offre de stage");
 		System.out.println("2 :Voir les mots-clés disponibles pour une offre de stage");
 		System.out.println("3 :Ajouter un mot-clé à une de ses offres de stage");
@@ -102,7 +102,7 @@ public class ApplicationEntreprise {
 		System.out.println("5 :Voir les candidatures pour une de ses offres de stages");
 		System.out.println("6 :Sélectionner un étudiant pour une de ses offres de stage");
 		System.out.println("7 :Annuler une offre de stage en donnant son code");
-		System.out.println("autre : quitter le programme");
+		System.out.println("Autre : quitter le programme");
 		int choix = scanner.nextInt();
 		scanner.nextLine();
 		switch (choix) {
@@ -136,7 +136,7 @@ public class ApplicationEntreprise {
 
 	private void encoderOffre() {
 		System.out.println("***************** Encoder une offre de stage *****************");
-		System.out.println("Veuillez entrer une description de l'offre de stage :");
+		System.out.println("Veuillez entrer la description de l'offre de stage :");
 		String description = scanner.nextLine();
 		System.out.println("Veuillez entrer le semestre de l'offre de stage");
 		String semestre = scanner.nextLine();
@@ -156,14 +156,14 @@ public class ApplicationEntreprise {
 		try {
 			affichageMotClefs.execute();
 			ResultSet rs = affichageMotClefs.getResultSet(); // Utilisez executeQuery au lieu de getResultSet
-			System.out.println("  mot clefs disponible");
+			System.out.println("Mot clefs disponibles");
 			System.out.println("_______________");
 			while (rs.next()) {
 				System.out.printf("|  %-10s  | \n", rs.getString("mot")); // Utilisez le nom de la colonne "mot"
 			}
 			System.out.println("_______________");
 		} catch (SQLException se) {
-			System.out.println("Aucun cours disponible");
+			System.out.println("Aucun mot clef disponible");
 		}
 		applicationCentrale();
 	}
@@ -191,9 +191,9 @@ public class ApplicationEntreprise {
 			voirSesOffres.setString(1, idEntreprise);
 			voirSesOffres.execute();
 			ResultSet rs = voirSesOffres.getResultSet();
-			System.out.println("  Offre de stage");
+			System.out.println(" Offre de stage");
 			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.println("  | code stage |  Description   |Semestre|    etat     |nombre candidature en attentre |     nom       |");
+			System.out.println("  | Code stage |  Description   |Semestre|    Etat     |Nombre candidature en attentre |     Nom       |");
 			System.out.println("_______________________________________________________________________________________________________|");
 			while (rs.next()) {
 				System.out.printf("  |   %-7s  |   %-10s   |  %-5s | %-10s | %-10s                    | %-10s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7));
@@ -214,7 +214,7 @@ public class ApplicationEntreprise {
 			voirSesCandidature.execute();
 			ResultSet rs = voirSesCandidature.getResultSet();
 			if (!rs.next()) {
-				System.out.println("Il n'y a pas de candidatures pour cette offre ou vous n'avez pas d'offre ayant ce code");
+				System.out.println("Il n'y a pas de candidature pour cette offre ou vous n'avez pas d'offre ayant ce code");
 				applicationCentrale();
 			}
 			System.out.println("_______________________________________________________");
@@ -225,7 +225,7 @@ public class ApplicationEntreprise {
 			} while (rs.next());
 			System.out.println("_______________________________________________________");
 		} catch (SQLException se) {
-			System.out.println("Aucun cours disponible");
+			System.out.println("Aucune candidature disponible");
 		}
 		applicationCentrale();
 	}
@@ -264,7 +264,7 @@ public class ApplicationEntreprise {
 	}
 
 	private void quitterProgramme() {
-		System.out.println("MErci d'avoir utilisé notre programme !");
+		System.out.println("Merci d'avoir utilisé notre programme !");
 		try {
 			voirSesOffres.close();
 			voirSesCandidature.close();
