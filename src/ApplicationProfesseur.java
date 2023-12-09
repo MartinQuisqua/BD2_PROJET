@@ -185,10 +185,10 @@ public class ApplicationProfesseur {
 			ResultSet rs = offresStageNV.getResultSet();
 
 			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.printf(" | %-15s | %-15s |  %-20s | %-15s |\n", "Code stage", "Semestre", "Nom de l'entreprise", "Description");
+			System.out.printf(" | %-15s | %-15s | %-20s | %-15s |\n", "Code stage", "Semestre", "Nom de l'entreprise", "Description");
 			System.out.println("_______________________________________________________________________________________________________|");
 			while (rs.next()) {
-				System.out.printf(" | %-15s | %-15s |  %-20s | %-15s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+				System.out.printf(" | %-15s | %-15s | %-20s | %-15s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
 			}
 			System.out.println("_______________________________________________________________________________________________________|");
 		} catch (SQLException e) {
@@ -224,10 +224,10 @@ public class ApplicationProfesseur {
 			ResultSet rs = offresStageVA.getResultSet();
 
 			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.printf(" | %-15s | %-15s |  %-20s | %-15s |\n", "Code stage", "Semestre", "Nom de l'entreprise", "Description");
+			System.out.printf(" | %-15s | %-15s | %-20s | %-15s |\n", "Code stage", "Semestre", "Nom de l'entreprise", "Description");
 			System.out.println("_______________________________________________________________________________________________________|");
 			while (rs.next()) {
-				System.out.printf(" | %-15s | %-15s |  %-20s | %-15s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+				System.out.printf(" | %-15s | %-15s | %-20s | %-15s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
 			}
 			System.out.println("_______________________________________________________________________________________________________|");
 		} catch (SQLException e) {
@@ -244,10 +244,10 @@ public class ApplicationProfesseur {
 			ResultSet rs = etudiantsSansStage.getResultSet();
 
 			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.printf(" | %-15s | %-15s |  %-20s | %-15s | %-30s |\n", "Nom", "Prenom", "E-mail", "Semestre", "Nombre candidature en attente");
+			System.out.printf(" | %-15s | %-15s | %-20s | %-15s | %-30s |\n", "Nom", "Prenom", "E-mail", "Semestre", "Nombre candidature en attente");
 			System.out.println("_______________________________________________________________________________________________________|");
 			while (rs.next()) {
-				System.out.printf(" | %-15s | %-15s |  %-20s | %-15s | %-30s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+				System.out.printf(" | %-15s | %-15s | %-20s | %-15s | %-30s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
 			}
 			System.out.println("_______________________________________________________________________________________________________|");
 		} catch (SQLException e) {
@@ -264,10 +264,10 @@ public class ApplicationProfesseur {
 			ResultSet rs = offresStageAT.getResultSet();
 
 			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.printf(" | %-15s | %-20s |  %-20s | %-20s |\n", "Code du stage", "Nom de l’entreprise", "Nom de l’étudiant", "Prénom de l’étudiant");
+			System.out.printf(" | %-15s | %-20s | %-20s | %-20s |\n", "Code du stage", "Nom de l’entreprise", "Nom de l’étudiant", "Prénom de l’étudiant");
 			System.out.println("_______________________________________________________________________________________________________|");
 			while (rs.next()) {
-				System.out.printf(" | %-15s | %-20s |  %-20s | %-20s |\n", rs.getString(2), rs.getString(4), rs.getString(5), rs.getString(6));
+				System.out.printf(" | %-15s | %-20s | %-20s | %-20s |\n", rs.getString(2), rs.getString(4), rs.getString(5), rs.getString(6));
 			}
 			System.out.println("_______________________________________________________________________________________________________|");
 		} catch (SQLException e) {
