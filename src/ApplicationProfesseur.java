@@ -99,26 +99,26 @@ public class ApplicationProfesseur {
 		System.out.println("***************** Encoder un étudiant *****************");
 		String sel = BCrypt.gensalt();
 		try {
-			System.out.println("Veuillez entrez le nom de l'etudiant : ");
+			System.out.println("Veuillez entrer le nom de l'etudiant : ");
 			encoderEtudiant.setString(1, scanner.next());
 
-			System.out.println("Veuillez entrez le prenom de l'etudiant : ");
+			System.out.println("Veuillez entrer le prenom de l'etudiant : ");
 			encoderEtudiant.setString(2, scanner.next());
 
-			System.out.println("Veuillez entrez le e-mail de l'etudiant : ");
+			System.out.println("Veuillez entrer le e-mail de l'etudiant : ");
 			encoderEtudiant.setString(3, scanner.next());
 
-			System.out.println("Veuillez entrez le mot de passe de l'etudiant : ");
+			System.out.println("Veuillez entrer le mot de passe de l'etudiant : ");
 			encoderEtudiant.setString(4, BCrypt.hashpw(scanner.next(), sel));
 
-			System.out.println("Veuillez entrez le semestre de l'etudiant : ");
+			System.out.println("Veuillez entrer le semestre de l'etudiant : ");
 			encoderEtudiant.setString(5, scanner.next());
 
 			encoderEtudiant.execute();
 			ResultSet rs = encoderEtudiant.getResultSet();
 
 			while (rs.next()) {
-				System.out.println("Id de l'étudiant encoder : " + rs.getString(1));
+				System.out.println("Id de l'étudiant encodé : " + rs.getString(1));
 			}
 		} catch (SQLException se) {
 			System.out.println("Erreur lors de l’insertion !" + se.getMessage());
@@ -130,30 +130,30 @@ public class ApplicationProfesseur {
 		System.out.println("***************** Encoder une entreprise *****************");
 		String sel = BCrypt.gensalt();
 		try {
-			System.out.println("Veuillez entrez le nom de l'entreprise : ");
+			System.out.println("Veuillez entrer le nom de l'entreprise : ");
 			encoderEntreprise.setString(1, scanner.next());
 
-			System.out.println("Veuillez entrez le code de l'entreprise : ");
+			System.out.println("Veuillez entrer le code de l'entreprise : ");
 			encoderEntreprise.setString(2, scanner.next());
 
-			System.out.println("Veuillez entrez le e-mail de l'entreprise : ");
+			System.out.println("Veuillez entrer le e-mail de l'entreprise : ");
 			encoderEntreprise.setString(3, scanner.next());
 
-			System.out.println("Veuillez entrez le mot de passe de l'entreprise : ");
+			System.out.println("Veuillez entrer le mot de passe de l'entreprise : ");
 			encoderEntreprise.setString(4, BCrypt.hashpw(scanner.next(), sel));
 
-			System.out.println("Veuillez entrez l'adressee de l'entreprise : ");
+			System.out.println("Veuillez entrer l'adressee de l'entreprise : ");
 			encoderEntreprise.setString(5, scanner.next());
 
 			encoderEntreprise.execute();
 			ResultSet rs = encoderEntreprise.getResultSet();
 
 			while (rs.next()) {
-				System.out.println("Code de l'entreprise encoder : " + rs.getString(1));
+				System.out.println("Code de l'entreprise encodée : " + rs.getString(1));
 			}
 
 		} catch (SQLException se) {
-			System.out.println("Imposible d'encoder l'entreprise " + se.getMessage());
+			System.out.println("Impossible d'encoder l'entreprise " + se.getMessage());
 		}
 		applicationCentrale();
 	}
@@ -161,18 +161,18 @@ public class ApplicationProfesseur {
 	private void encoderMotClef() {
 		System.out.println("***************** Encoder un mot-clef *****************");
 		try {
-			System.out.println("Veuillez entrez le nouveau mot-celf : ");
+			System.out.println("Veuillez entrer le nouveau mot-celf : ");
 			encoderMotClef.setString(1, scanner.next());
 
 			encoderMotClef.execute();
 			ResultSet rs = encoderMotClef.getResultSet();
 
 			while (rs.next()) {
-				System.out.println("Id du mot clef encoder : " + rs.getString(1));
+				System.out.println("Id du mot clef encodé : " + rs.getString(1));
 			}
 
 		} catch (SQLException se) {
-			System.out.println("impossible d'encoder le mot de passe!" + se.getMessage());
+			System.out.println("Impossible d'encoder le mot de passe!" + se.getMessage());
 		}
 		applicationCentrale();
 	}
@@ -192,7 +192,7 @@ public class ApplicationProfesseur {
 			}
 			System.out.println("_______________________________________________________________________________________________________|");
 		} catch (SQLException e) {
-			System.out.println("Impossible d'afficher les offres de stage non valider !" + e.getMessage());
+			System.out.println("Impossible d'afficher les offres de stage non validées !" + e.getMessage());
 		}
 		applicationCentrale();
 	}
@@ -200,14 +200,14 @@ public class ApplicationProfesseur {
 	private void validerStage() {
 		System.out.println("***************** Valider un stage *****************");
 		try {
-			System.out.println("Veuillez entrez le code du stage : ");
+			System.out.println("Veuillez entrer le code du stage : ");
 			validerStage.setString(1, scanner.next());
 
 			validerStage.execute();
 			ResultSet rs = validerStage.getResultSet();
 
 			while (rs.next()) {
-				System.out.println("Id du stage valider : " + rs.getString(1));
+				System.out.println("Id du stage validé : " + rs.getString(1));
 			}
 
 		} catch (SQLException se) {
@@ -231,7 +231,7 @@ public class ApplicationProfesseur {
 			}
 			System.out.println("_______________________________________________________________________________________________________|");
 		} catch (SQLException e) {
-			System.out.println("Impossible d'afficher les offres de stage valider !");
+			System.out.println("Impossible d'afficher les offres de stage validées !");
 		}
 		applicationCentrale();
 	}
@@ -244,14 +244,14 @@ public class ApplicationProfesseur {
 			ResultSet rs = etudiantsSansStage.getResultSet();
 
 			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.printf(" | %-15s | %-15s | %-20s | %-15s | %-30s |\n", "Nom", "Prenom", "E-mail", "Semestre", "Nombre candidature en attente");
+			System.out.printf(" | %-15s | %-15s | %-20s | %-15s | %-30s |\n", "Nom", "Prenom", "E-mail", "Semestre", "Nombre candidature(s) en attente");
 			System.out.println("_______________________________________________________________________________________________________|");
 			while (rs.next()) {
 				System.out.printf(" | %-15s | %-15s | %-20s | %-15s | %-30s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
 			}
 			System.out.println("_______________________________________________________________________________________________________|");
 		} catch (SQLException e) {
-			System.out.println("Impossible d'afficher les etudiant sans stage !" + e.getMessage());
+			System.out.println("Impossible d'afficher les etudiants sans stage !" + e.getMessage());
 		}
 		applicationCentrale();
 	}
@@ -271,7 +271,7 @@ public class ApplicationProfesseur {
 			}
 			System.out.println("_______________________________________________________________________________________________________|");
 		} catch (SQLException e) {
-			System.out.println("Impossible d'afficher les offres de stage attribuer !" + e.getMessage());
+			System.out.println("Impossible d'afficher les offres de stage attribuées !" + e.getMessage());
 		}
 		applicationCentrale();
 	}
