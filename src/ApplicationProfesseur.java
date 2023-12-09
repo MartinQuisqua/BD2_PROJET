@@ -96,6 +96,7 @@ public class ApplicationProfesseur {
 	}
 
 	private void encoderEtudiant() {
+		System.out.println("***************** Encoder un étudiant *****************");
 		String sel = BCrypt.gensalt();
 		try {
 			System.out.println("Veuillez entrez le nom de l'etudiant : ");
@@ -119,14 +120,14 @@ public class ApplicationProfesseur {
 			while (rs.next()) {
 				System.out.println("id nouvelle etudiant creer : " + rs.getString(1));
 			}
-		} catch (SQLException e) {
-			System.out.println("Impossible d'encoder un étudiant !");
-			e.printStackTrace();
+		} catch (SQLException se) {
+			System.out.println("Erreur lors de l’insertion !" + se.getMessage());
 		}
 		applicationCentrale();
 	}
 
 	private void encoderEntreprise() {
+		System.out.println("***************** Encoder une entreprise *****************");
 		String sel = BCrypt.gensalt();
 		try {
 			System.out.println("Veuillez entrez le nom de l'entreprise : ");
@@ -151,14 +152,14 @@ public class ApplicationProfesseur {
 				System.out.println("Code nouvelle entreprise creer : " + rs.getString(1));
 			}
 
-		} catch (SQLException e) {
-			System.out.println("Impossible d'encoder un entreprise !");
-			e.printStackTrace();
+		} catch (SQLException se) {
+			System.out.println("Imposible d'encoder l'entreprise " + se.getMessage());
 		}
 		applicationCentrale();
 	}
 
 	private void encoderMotClef() {
+		System.out.println("***************** Encoder un mot-clef *****************");
 		try {
 			System.out.println("Veuillez entrez le nouveau mot-celf : ");
 			encoderMotClef.setString(1, scanner.next());
@@ -170,14 +171,14 @@ public class ApplicationProfesseur {
 				System.out.println("Code nouveau mot clef creer : " + rs.getString(1));
 			}
 
-		} catch (SQLException e) {
-			System.out.println("Impossible d'encoder le mot clef !");
-			e.printStackTrace();
+		} catch (SQLException se) {
+			System.out.println("impossible d'encoder le mot de passe!" + se.getMessage());
 		}
 		applicationCentrale();
 	}
 
 	private void offresStageNV() {
+		System.out.println("***************** Voir les offres de stage dans l’état « non validée » *****************");
 		try {
 
 			offresStageNV.execute();
@@ -187,13 +188,13 @@ public class ApplicationProfesseur {
 				System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5));
 			}
 		} catch (SQLException e) {
-			System.out.println("Impossible d'afficher les offres de stage non valider !");
-			e.printStackTrace();
+			System.out.println("Impossible d'afficher les offres de stage non valider !" + e.getMessage());
 		}
 		applicationCentrale();
 	}
 
 	private void validerStage() {
+		System.out.println("***************** Valider un stage *****************");
 		try {
 			System.out.println("Veuillez entrez le code du stage : ");
 			validerStage.setString(1, scanner.next());
@@ -205,14 +206,14 @@ public class ApplicationProfesseur {
 				System.out.println("Id stage valider : " + rs.getString(1));
 			}
 
-		} catch (SQLException e) {
-			System.out.println("Impossible d'encoder un entreprise !");
-			e.printStackTrace();
+		} catch (SQLException se) {
+			System.out.println("Impossible d'encoder un entreprise !" + se.getMessage());
 		}
 		applicationCentrale();
 	}
 
 	private void offresStageVA() {
+		System.out.println("***************** Voir les offres de stage dans l’état « validée » *****************");
 		try {
 
 			offresStageVA.execute();
@@ -223,12 +224,12 @@ public class ApplicationProfesseur {
 			}
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les offres de stage valider !");
-			e.printStackTrace();
 		}
 		applicationCentrale();
 	}
 
 	private void etudiantsSansStage() {
+		System.out.println("***************** Voir les étudiants sans stage *****************");
 		try {
 
 			etudiantsSansStage.execute();
@@ -238,13 +239,13 @@ public class ApplicationProfesseur {
 				System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5) + " | " + rs.getString(6));
 			}
 		} catch (SQLException e) {
-			System.out.println("Impossible d'afficher les etudiant sans stage !");
-			e.printStackTrace();
+			System.out.println("Impossible d'afficher les etudiant sans stage !" + e.getMessage());
 		}
 		applicationCentrale();
 	}
 
 	private void offresStageAT() {
+		System.out.println("***************** Voir les offres de stage attribuées *****************");
 		try {
 
 			offresStageAT.execute();
@@ -254,14 +255,27 @@ public class ApplicationProfesseur {
 				System.out.println(rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getString(5) + " | " + rs.getString(6));
 			}
 		} catch (SQLException e) {
-			System.out.println("Impossible d'afficher les offres de stage attribuer !");
-			e.printStackTrace();
+			System.out.println("Impossible d'afficher les offres de stage attribuer !" + e.getMessage());
 		}
 		applicationCentrale();
 	}
 
 	private void quitterProgramme() {
-		System.out.println("merci d'avoir tt fais maintenant bare toi !");
+		System.out.println("Au revoir !");
+		try {
+			encoderEtudiant.close();
+			encoderEntreprise.close();
+			encoderMotClef.close();
+			offresStageNV.close();
+			validerStage.close();
+			offresStageVA.close();
+			etudiantsSansStage.close();
+			offresStageAT.close();
+			scanner.close();
+			connection.close();
+		} catch (SQLException e) {
+			System.out.println("Impossible de fermer la connexion !" + e.getMessage());
+		}
 		System.exit(1);
 	}
 }

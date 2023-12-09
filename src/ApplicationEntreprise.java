@@ -2,7 +2,9 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class ApplicationEntreprise {
-	private String url = "jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans";
+	//private String url = "jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans";
+	private String url = "jdbc:postgresql://localhost:5432/postgres";
+
 	private Connection connection = null;
 	private PreparedStatement connexionEntrepriseSql = null;
 	private PreparedStatement encoderOffreStage = null;
@@ -24,8 +26,8 @@ public class ApplicationEntreprise {
 		}
 
 		try {
-			System.out.println("Entrez votre mot de passe postgres");
-			connection = DriverManager.getConnection(url, "martinquisquater", "SJBD0H4YR");
+			//connection = DriverManager.getConnection(url, "martinquisquater", "SJBD0H4YR");
+			connection = DriverManager.getConnection(url, "postgres", "Mama@0202");
 		} catch (SQLException e) {
 			System.out.println("Impossible de joindre le server !");
 			System.exit(1);
@@ -136,7 +138,6 @@ public class ApplicationEntreprise {
 		System.out.println("***************** Encoder une offre de stage *****************");
 		System.out.println("Veuillez entrer une description de l'offre de stage :");
 		String description = scanner.nextLine();
-		System.out.println("description : " + description);
 		System.out.println("Veuillez entrer le semestre de l'offre de stage");
 		String semestre = scanner.nextLine();
 		try {
@@ -146,8 +147,7 @@ public class ApplicationEntreprise {
 			encoderOffreStage.executeQuery();
 			System.out.println("Offre de stage ajoutée !");
 		} catch (SQLException se) {
-			System.out.println("Erreur lors de l’insertion !");
-			se.printStackTrace();
+			System.out.println("Erreur lors de l’insertion !" + se.getMessage());
 		}
 		applicationCentrale();
 	}
@@ -163,7 +163,6 @@ public class ApplicationEntreprise {
 			}
 			System.out.println("_______________");
 		} catch (SQLException se) {
-			se.printStackTrace();
 			System.out.println("Aucun cours disponible");
 		}
 		applicationCentrale();
@@ -182,8 +181,7 @@ public class ApplicationEntreprise {
 			ajouterMotClefs.execute();
 			System.out.println("Mot clé ajouté !");
 		} catch (SQLException se) {
-			System.out.println("Erreur lors de l’insertion !");
-			se.printStackTrace();
+			System.out.println("Erreur lors de l’insertion !" + se.getMessage());
 		}
 		applicationCentrale();
 	}
@@ -202,8 +200,7 @@ public class ApplicationEntreprise {
 			}
 			System.out.println("____________________________");
 		} catch (SQLException se) {
-			se.printStackTrace();
-			System.out.println("Aucun cours disponible");
+			System.out.println("Erreur lors de l’insertion !" + se.getMessage());
 		}
 		applicationCentrale();
 	}
@@ -228,7 +225,6 @@ public class ApplicationEntreprise {
 			} while (rs.next());
 			System.out.println("_______________________________________________________");
 		} catch (SQLException se) {
-			se.printStackTrace();
 			System.out.println("Aucun cours disponible");
 		}
 		applicationCentrale();
@@ -247,8 +243,7 @@ public class ApplicationEntreprise {
 			selectionnerCandidat.execute();
 			System.out.println("Etudiant sélectionné !");
 		} catch (SQLException se) {
-			System.out.println("Erreur lors de l’insertion !");
-			se.printStackTrace();
+			System.out.println("Erreur lors de l’insertion !" + se.getMessage());
 		}
 		applicationCentrale();
 	}
@@ -263,14 +258,24 @@ public class ApplicationEntreprise {
 			annulerCandidature.execute();
 			System.out.println("Offre de stage annulée !");
 		} catch (SQLException se) {
-			System.out.println("Erreur lors de l’insertion !");
-			se.printStackTrace();
+			System.out.println("Erreur lors de l’insertion !" + se.getMessage());
 		}
 		applicationCentrale();
 	}
 
 	private void quitterProgramme() {
-		System.out.println("merci d'avoir tt fais maintenant bare toi !");
+		System.out.println("MErci d'avoir utilisé notre programme !");
+		try {
+			voirSesOffres.close();
+			voirSesCandidature.close();
+			selectionnerCandidat.close();
+			annulerCandidature.close();
+			ajouterMotClefs.close();
+			scanner.close();
+			connection.close();
+		} catch (SQLException se) {
+			System.out.println("Erreur lors de la fermeture de la connexion !" + se.getMessage());
+		}
 		System.exit(1);
 	}
 }

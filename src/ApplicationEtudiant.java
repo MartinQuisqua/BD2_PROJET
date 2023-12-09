@@ -54,8 +54,6 @@ public class ApplicationEtudiant {
         String email = scanner.nextLine();
         System.out.println("Veuillez entrer votre mot de passe");
         String passwordUser = scanner.nextLine();
-        //String passwordUser = "EtudiantTest";
-
         try {
             connexionEtudiant.setString(1, email);
             connexionEtudiant.execute();
@@ -118,6 +116,7 @@ public class ApplicationEtudiant {
     }
 
     private void voirOffresStageValidees() {
+        System.out.println("***************** Voir offres de stage validees *****************");
         try {
             chercherOffresStageValidees.setInt(1, idEtudiant);
             chercherOffresStageValidees.execute();
@@ -130,13 +129,13 @@ public class ApplicationEtudiant {
             System.out.println("_______________");
 
         } catch (SQLException se) {
-            se.printStackTrace();
             System.out.println("Impossible de voir les offres de stage validées !");
         }
         applicationCentrale();
     }
 
     private void chercherOffresStageMotCle() {
+        System.out.println("***************** Rechercher une offre de stage par mot clÃ© *****************");
         try {
             System.out.println("Veuillez introduire le mot clÃ© : ");
             String motCle = scanner.nextLine();
@@ -154,13 +153,13 @@ public class ApplicationEtudiant {
             System.out.println("_______________");
 
         } catch (SQLException se) {
-            se.printStackTrace();
             System.out.println("Impossible de voir les offres de stage validées par mot clé!");
         }
         applicationCentrale();
     }
 
     private void poserCandidature() {
+        System.out.println("***************** Poser sa candidature pour un stage *****************");
         try {
             System.out.println("Veuillez introduire le code de l'offre de stage pour lequel vous posez votre candidature : ");
             String codeStage = scanner.nextLine();
@@ -178,13 +177,13 @@ public class ApplicationEtudiant {
                 System.out.println("Inscrit pour le stage dont l'ID est : " + rs.getString(1));
             }
         } catch (SQLException se) {
-            se.printStackTrace();
-            System.out.println("Impossible de poser la candidature !");
+            System.out.println("Erreur lors de l’insertion !" + se.getMessage());
         }
         applicationCentrale();
     }
 
     private void voirOffresCandidature() {
+        System.out.println("***************** Voir les offres de stage pour lesquels lâ€™Ã©tudiant a posÃ© sa candidature *****************");
         try {
             chercherOffresCandidature.setInt(1, idEtudiant);
             chercherOffresCandidature.execute();
@@ -197,13 +196,13 @@ public class ApplicationEtudiant {
             System.out.println("_______________");
 
         } catch (SQLException se) {
-            se.printStackTrace();
             System.out.println("Impossible de voir les offres de stage pour lesquelles l'étudiant est candidat !");
         }
         applicationCentrale();
     }
 
     private void annulerCandidature() {
+        System.out.println("***************** Annuler une candidature *****************");
         try {
             System.out.println("Veuillez introduire le code de l'offre de stage pour laquelle vous voulez annuler votre candidature : ");
             String codeStage = scanner.nextLine();
@@ -218,14 +217,24 @@ public class ApplicationEtudiant {
                 System.out.println("Candidature annulée pour le stage dont l'ID est : " + rs.getString(1));
             }
         } catch (SQLException se) {
-            se.printStackTrace();
-            System.out.println("Impossible d'annuler la candidature !");
+            System.out.println("Impossible D'annuler le stage " + se.getMessage());
         }
         applicationCentrale();
     }
 
     private void quitterProgramme() {
         System.out.println("Fermeture du programme");
+        try {
+            chercherOffresCandidature.close();
+            chercherOffresStageMotCle.close();
+            chercherOffresStageValidees.close();
+            poserCandidature.close();
+            annulerCandidature.close();
+            scanner.close();
+            connection.close();
+        } catch (SQLException se) {
+            System.out.println("Impossible de fermer la connexion !" + se.getMessage());
+        }
         System.exit(1);
     }
 }
