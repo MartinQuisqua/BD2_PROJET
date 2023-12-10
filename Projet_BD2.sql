@@ -1,7 +1,7 @@
 DROP SCHEMA IF EXISTS Projet_BD2 CASCADE;
 CREATE SCHEMA Projet_BD2;
 
----- ENUMS
+/*********************************************Enums*********************************************/
 
 DROP TYPE IF EXISTS Projet_BD2.SEMESTRES;
 DROP TYPE IF EXISTS Projet_BD2.ETATS_STAGE;
@@ -11,7 +11,7 @@ CREATE TYPE Projet_BD2.SEMESTRES AS ENUM ('Q1','Q2');
 CREATE TYPE Projet_BD2.ETATS_STAGE AS ENUM ('non validée', 'validée', 'attribuée', 'annulée');
 CREATE TYPE Projet_BD2.ETATS_CANDIDATURE AS ENUM ('en attente', 'acceptée', 'refusée', 'annulée');
 
----- CREATE TABLE
+/*********************************************Create table*********************************************/
 
 CREATE TABLE Projet_BD2.entreprises
 (
@@ -64,8 +64,6 @@ CREATE TABLE Projet_BD2.stage_mc
     mot_clef INTEGER REFERENCES Projet_BD2.mots_clefs (id_mc),
     PRIMARY KEY (stage, mot_clef)
 );
-
----- function
 
 /*********************************************Application Professeur*********************************************/
 
@@ -714,7 +712,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-/********************************************* TRIGGER *********************************************/
+/*********************************************Trigger*********************************************/
 
 CREATE OR REPLACE FUNCTION Projet_BD2.verificationInsertCandidature() RETURNS TRIGGER AS
 $$
@@ -1033,7 +1031,7 @@ CREATE TRIGGER triggerMaxTroisMotsClefs
     FOR EACH ROW
 EXECUTE PROCEDURE Projet_BD2.verificationMaxtroisMotsClefs();
 
-/********************************************* INSERT *********************************************/
+/*********************************************Insert*********************************************/
 
 INSERT INTO Projet_BD2.etudiants(id_etudiant, nom, prenom, email, mdp_hash, semestre, nb_candidature_at)
 VALUES (DEFAULT, 'De', 'Jean', 'j.d@student.vinci.be', '$2a$10$3k9iGHAGLw7wTT.g95gCF.p0Gp4ymcAobR.XJYqAstDb7Aa8gw9um',
@@ -1090,7 +1088,7 @@ VALUES ('Je suis chaud', 1, 4, DEFAULT);
 INSERT INTO Projet_BD2.candidatures(motivation, etudiant, stage, etat)
 VALUES ('Je suis tres chaud', 2, 5, DEFAULT);
 
-/********************************************* GRANT *********************************************/
+/*********************************************Grant*********************************************/
 
 GRANT CONNECT ON DATABASE dbnicolasheymans TO martinquisquater, gauthiercollard;
 
@@ -1139,7 +1137,7 @@ GRANT UPDATE ON Projet_BD2.candidatures,
     Projet_BD2.etudiants
     TO gauthiercollard;
 
-/********************************************* TEST *********************************************/
+/*********************************************Test*********************************************/
 /*
 ----1
 --1.a
