@@ -155,13 +155,13 @@ public class ApplicationEntreprise {
 	private void voirLesMotsCLefs() {
 		try {
 			affichageMotClefs.execute();
-			ResultSet rs = affichageMotClefs.getResultSet(); // Utilisez executeQuery au lieu de getResultSet
+			ResultSet rs = affichageMotClefs.getResultSet();
 			System.out.println("Mot clefs disponibles");
-			System.out.println("_______________");
+			System.out.println("________________");
 			while (rs.next()) {
-				System.out.printf("|  %-10s  | \n", rs.getString("mot")); // Utilisez le nom de la colonne "mot"
+				System.out.printf("|  %-10s  | \n", rs.getString("mot"));
 			}
-			System.out.println("_______________");
+			System.out.println("________________");
 		} catch (SQLException se) {
 			System.out.println("Aucun mot clef disponible");
 		}
@@ -192,17 +192,13 @@ public class ApplicationEntreprise {
 			voirSesOffres.execute();
 			ResultSet rs = voirSesOffres.getResultSet();
 			System.out.println("  Offre de stage");
-			// code stage |  Description   |Semestre|    etat     |nombre candidature en attentre |     nom
-			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.printf(" | %-10s | %-20s | %-10s | %-11s | %-20s | %-10s |\n", "code stage", "Description", "Semestre", "etat", "nombre candidature en attentre", "nom");
-			System.out.println(" Offre de stage");
-			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.println("  | Code stage |  Description   |Semestre|    Etat     |Nombre candidature en attentre |     Nom       |");
-			System.out.println("_______________________________________________________________________________________________________|");
+			System.out.println("________________________________________________________________________________________________________________________");
+			System.out.printf(" | %-10s | %-20s | %-10s | %-15s | %-30s | %-15s |\n", "Code stage", "Description", "Semestre", "Etat", "Nombre candidature en attentre", "Nom");
+			System.out.println("________________________________________________________________________________________________________________________");
 			while (rs.next()) {
-				System.out.printf(" | %-10s | %-20s | %-10s | %-11s | %-20s | %-10s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7));
+				System.out.printf(" | %-10s | %-20s | %-10s | %-15s | %-30s | %-15s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getString(7));
 			}
-			System.out.println("_______________________________________________________________________________________________________|");
+			System.out.println("________________________________________________________________________________________________________________________");
 		} catch (SQLException se) {
 			System.out.println("Erreur lors de l’insertion !" + se.getMessage());
 		}
@@ -222,13 +218,13 @@ public class ApplicationEntreprise {
 				applicationCentrale();
 			}
 			// etat, nom, prenom, email, motivations
-			System.out.println("_______________________________________________________________________________________________________");
-			System.out.printf(" | %-10s | %-10s | %-10s | %-20s | %-20s |\n", "etat", "nom", "prenom", "email", "motivations");
-			System.out.println("_______________________________________________________");
+			System.out.println("_________________________________________________________________________________________________");
+			System.out.printf(" | %-15s | %-10s | %-10s | %-25s | %-20s |\n", "etat", "nom", "prenom", "email", "motivations");
+			System.out.println("_________________________________________________________________________________________________");
 			do {
-				System.out.printf(" | %-10s | %-10s | %-10s | %-20s | %-20s |\n", rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+				System.out.printf(" | %-15s | %-10s | %-10s | %-25s | %-20s |\n", rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
 			} while (rs.next());
-			System.out.println("_______________________________________________________________________________________________________");
+			System.out.println("_________________________________________________________________________________________________");
 		} catch (SQLException se) {
 			System.out.println("Aucune candidature disponible");
 		}
