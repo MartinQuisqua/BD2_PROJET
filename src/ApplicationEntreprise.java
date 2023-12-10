@@ -1,6 +1,12 @@
 import java.sql.*;
 import java.util.Scanner;
 
+/**
+ * @author Gauthier Collard
+ * @author Nicolas Heymans
+ * @author Martin Quisquater
+ */
+
 public class ApplicationEntreprise {
 	private String url = "jdbc:postgresql://172.24.2.6:5432/dbnicolasheymans";
 	//private String url = "jdbc:postgresql://localhost:5432/postgres";

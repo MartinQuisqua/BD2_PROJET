@@ -1,3 +1,9 @@
+/*
+ * @author Gauthier Collard
+ * @author Nicolas Heymans
+ * @author Martin Quisquater
+*/
+
 DROP SCHEMA IF EXISTS Projet_BD2 CASCADE;
 CREATE SCHEMA Projet_BD2;
 
@@ -78,21 +84,23 @@ Le professeur devra encoder les informations de l'étudiant :
 Ce mot depasse sera communiqué à l’étudiant par mail.
 */
 
-CREATE OR REPLACE FUNCTION Projet_BD2.encoderEtudiant(_nom VARCHAR,
+CREATE
+OR REPLACE FUNCTION Projet_BD2.encoderEtudiant(_nom VARCHAR,
                                                       _prenom VARCHAR,
                                                       _email VARCHAR,
                                                       _mdp_hash CHAR(60),
                                                       _semestre CHAR(2)) RETURNS INTEGER AS
 $$
 DECLARE
-    id INTEGER;
+id INTEGER;
 BEGIN
-    INSERT INTO Projet_BD2.etudiants(id_etudiant, nom, prenom, email, mdp_hash, semestre, nb_candidature_at)
-    VALUES (DEFAULT, _nom, _prenom, _email, _mdp_hash, _semestre :: Projet_BD2.SEMESTRES, DEFAULT)
-    RETURNING id_etudiant INTO id;
-    RETURN id;
+INSERT INTO Projet_BD2.etudiants(id_etudiant, nom, prenom, email, mdp_hash, semestre, nb_candidature_at)
+VALUES (DEFAULT, _ nom, _ prenom, _ email, _ mdp_hash, _semestre :: Projet_BD2.SEMESTRES, DEFAULT) RETURNING id_etudiant
+INTO id;
+RETURN id;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 /* 2.
 Le professeur devra encoder :
@@ -105,21 +113,23 @@ Le professeur devra encoder :
 Ce mot de passe sera communiqué à l’entreprise par mail.
  */
 
-CREATE OR REPLACE FUNCTION Projet_BD2.encoderEntreprise(_nom VARCHAR,
+CREATE
+OR REPLACE FUNCTION Projet_BD2.encoderEntreprise(_nom VARCHAR,
                                                         _code CHARACTER(3),
                                                         _email VARCHAR,
                                                         _mdp_hash CHAR(60),
                                                         _adresse VARCHAR) RETURNS VARCHAR AS
 $$
 DECLARE
-    code_entreprise VARCHAR(3);
+code_entreprise VARCHAR(3);
 BEGIN
-    INSERT INTO Projet_BD2.entreprises(nom, code, email, mdp_hash, adresse)
-    VALUES (_nom, _code, _email, _mdp_hash, _adresse)
-    RETURNING code INTO code_entreprise;
-    RETURN code_entreprise;
+INSERT INTO Projet_BD2.entreprises(nom, code, email, mdp_hash, adresse)
+VALUES (_ nom, _ code, _ email, _ mdp_hash, _ adresse) RETURNING code
+INTO code_entreprise;
+RETURN code_entreprise;
 END ;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 /* 3.
    Encoder un mot-clé que les entreprises pourront utiliser pour décrire leur stage. Par exemple « Java », « SQL » ou « Web ».
@@ -127,17 +137,19 @@ $$ LANGUAGE plpgsql;
    L’encodage échouera si le mot clé est déjà présent
  */
 
-CREATE OR REPLACE FUNCTION Projet_BD2.encoderMotClef(_mot_clef VARCHAR) RETURNS INTEGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.encoderMotClef(_mot_clef VARCHAR) RETURNS INTEGER AS
 $$
 DECLARE
-    id INTEGER;
+id INTEGER;
 BEGIN
-    INSERT INTO Projet_BD2.mots_clefs(id_mc, mot_clef)
-    VALUES (DEFAULT, _mot_clef)
-    RETURNING id_mc INTO id;
-    RETURN id;
+INSERT INTO Projet_BD2.mots_clefs(id_mc, mot_clef)
+VALUES (DEFAULT, _ mot_clef) RETURNING id_mc
+INTO id;
+RETURN id;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 /* 4.
 Voir les offres de stage dans l’état « non validée ».
@@ -149,7 +161,8 @@ Pour chaque offre :
    Sa description.
  */
 
-CREATE OR REPLACE VIEW Projet_BD2.offresStageNV AS
+CREATE
+OR REPLACE VIEW Projet_BD2.offresStageNV AS
 SELECT st.id_stage, st.code_stage, st.semestre, en.nom AS nom_entreprise, st.description
 FROM Projet_BD2.stages st,
      Projet_BD2.entreprises en
@@ -163,29 +176,34 @@ Valider une offre de stage en donnant son code.
 On ne pourra valider que des offres de stages « non validée ».
  */
 
-CREATE OR REPLACE FUNCTION Projet_BD2.validerStage(_code_stage VARCHAR) RETURNS INTEGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.validerStage(_code_stage VARCHAR) RETURNS INTEGER AS
 $$
 DECLARE
-    _id_stage INTEGER;
+_id_stage INTEGER;
 BEGIN
-    IF NOT EXISTS(SELECT st.id_stage
+    IF
+NOT EXISTS(SELECT st.id_stage
                   FROM Projet_BD2.stages st
                   WHERE st.code_stage = _code_stage) THEN
         RAISE 'Code invalide';
-    END IF;
+END IF;
 
-    SELECT st.id_stage
-    INTO _id_stage
-    FROM Projet_BD2.stages st
-    WHERE st.code_stage = _code_stage;
+SELECT st.id_stage
+INTO _id_stage
+FROM Projet_BD2.stages st
+WHERE st.code_stage = _code_stage;
 
-    UPDATE Projet_BD2.stages
-    SET etat = 'validée'
-    WHERE id_stage = _id_stage;
+UPDATE Projet_BD2.stages
+SET etat = 'validée'
+WHERE id_stage = _id_stage;
 
-    RETURN _id_stage;
+RETURN
+_
+id_stage;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 /* 6.
 Voir les offres de stage dans l’état « validée ».
@@ -197,7 +215,8 @@ Pour chaque offre :
    Sa description.
  */
 
-CREATE OR REPLACE VIEW Projet_BD2.offresStageVA AS
+CREATE
+OR REPLACE VIEW Projet_BD2.offresStageVA AS
 SELECT st.id_stage, st.code_stage, st.semestre, en.nom AS nom_entreprise, st.description
 FROM Projet_BD2.stages st,
      Projet_BD2.entreprises en
@@ -216,7 +235,8 @@ Pour chaque étudiant :
    Le nombre de ses candidatures en attente.
 */
 
-CREATE OR REPLACE VIEW Projet_BD2.etudiantsSansStage AS
+CREATE
+OR REPLACE VIEW Projet_BD2.etudiantsSansStage AS
 SELECT et.id_etudiant, et.nom, et.prenom, et.email, et.semestre, et.nb_candidature_at
 FROM Projet_BD2.etudiants et
 WHERE et.id_etudiant NOT IN (SELECT ca.etudiant
@@ -233,7 +253,8 @@ Pour chaque offre:
    Le nom de l’étudiant sélectionné,
    Le prénom de l’étudiant sélectionné.
  */
-CREATE OR REPLACE VIEW Projet_BD2.offresStageAT AS
+CREATE
+OR REPLACE VIEW Projet_BD2.offresStageAT AS
 SELECT et.id_etudiant,
        st.code_stage,
        en.code,
@@ -264,19 +285,23 @@ Chaque offre de stage recevra automatiquement un code qui sera la concaténation
 Cette fonctionnalité échouera si l’entreprise a déjà une offre de stage attribuée durant ce semestre.
    */
 
-CREATE OR REPLACE FUNCTION Projet_BD2.ajouterStage(_code char(3), _description varchar(255), _semestre CHAR(2)) RETURNS INTEGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.ajouterStage(_code char(3), _description varchar(255), _semestre CHAR(2)) RETURNS INTEGER AS
 $$
 DECLARE
-    _id_stage INTEGER;
+_id_stage INTEGER;
 BEGIN
 
-    INSERT INTO Projet_BD2.stages(id_stage, code_entreprise, code_stage, description, semestre, etat)
-    VALUES (DEFAULT, _code, DEFAULT, _description, _semestre::Projet_BD2.SEMESTRES, DEFAULT)
-    RETURNING id_stage INTO _id_stage;
+INSERT INTO Projet_BD2.stages(id_stage, code_entreprise, code_stage, description, semestre, etat)
+VALUES (DEFAULT, _ code, DEFAULT, _ description, _semestre::Projet_BD2.SEMESTRES, DEFAULT) RETURNING id_stage
+INTO _id_stage;
 
-    RETURN _id_stage;
+RETURN
+_
+id_stage;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 
 /* 2.
@@ -300,53 +325,60 @@ Il ne sera pas possible d'ajouter un mot-clé :
    Si l’offre n’est pas une offre de l’entreprise.
 */
 
-CREATE OR REPLACE FUNCTION Projet_BD2.ajouterMotClef(_code_stage VARCHAR(10),
+CREATE
+OR REPLACE FUNCTION Projet_BD2.ajouterMotClef(_code_stage VARCHAR(10),
                                                      _mot_clef VARCHAR(255),
                                                      _code_entreprise CHAR(3)) RETURNS INTEGER AS
 $$
 DECLARE
-    _id_stage    INTEGER;
+_id_stage    INTEGER;
     _id_mot_clef INTEGER;
 BEGIN
 
-    IF NOT EXISTS(SELECT *
+    IF
+NOT EXISTS(SELECT *
                   FROM Projet_BD2.stages st
                   WHERE st.code_stage = _code_stage) THEN
         RAISE EXCEPTION 'Cette offre de stage est inexistante';
-    END IF;
+END IF;
 
-    IF NOT EXISTS(SELECT *
+    IF
+NOT EXISTS(SELECT *
                   FROM Projet_BD2.stages st
                   WHERE st.code_stage = _code_stage
                     AND st.code_entreprise = _code_entreprise) THEN
         RAISE EXCEPTION 'Le stage n''appartient pas a l''entreprise';
-    END IF;
+END IF;
 
 
-    IF NOT EXISTS(SELECT *
+    IF
+NOT EXISTS(SELECT *
                   FROM Projet_BD2.mots_clefs mc
                   WHERE mc.mot_clef = _mot_clef) THEN
         RAISE EXCEPTION 'Le mot clef n''existe pas';
-    END IF;
+END IF;
 
-    SELECT st.id_stage
-    into _id_stage
-    FROM projet_bd2.stages st
-    WHERE st.code_stage = _code_stage
-      AND st.code_entreprise = _code_entreprise;
+SELECT st.id_stage
+into _id_stage
+FROM projet_bd2.stages st
+WHERE st.code_stage = _code_stage
+  AND st.code_entreprise = _code_entreprise;
 
-    SELECT mc.id_mc
-    into _id_mot_clef
-    FROM projet_bd2.mots_clefs mc
-    WHERE mc.mot_clef = _mot_clef;
+SELECT mc.id_mc
+into _id_mot_clef
+FROM projet_bd2.mots_clefs mc
+WHERE mc.mot_clef = _mot_clef;
 
-    INSERT INTO Projet_BD2.stage_mc(stage, mot_clef)
-    VALUES (_id_stage, _id_mot_clef)
-    RETURNING mot_clef INTO _id_mot_clef;
+INSERT INTO Projet_BD2.stage_mc(stage, mot_clef)
+VALUES (_ id_stage, _ id_mot_clef) RETURNING mot_clef
+INTO _id_mot_clef;
 
-    RETURN _id_mot_clef;
+RETURN
+_
+id_mot_clef;
 END
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 /* 4.
 Pour chaque offre de stage, on affichera :
@@ -359,7 +391,8 @@ Pour chaque offre de stage, on affichera :
 
 Si l'offre de stage n'a pas encore été attribuée, il sera indiqué "pas attribuée" à la place du nom de l'étudiant. */
 
-CREATE OR REPLACE VIEW Projet_BD2.voirOffresDeStages AS
+CREATE
+OR REPLACE VIEW Projet_BD2.voirOffresDeStages AS
 WITH nbCandidatureAt AS (SELECT st.id_stage, COUNT(ca.etudiant) AS "nb_candidature_at"
                          FROM Projet_BD2.stages st
                                   LEFT OUTER JOIN Projet_BD2.candidatures ca ON st.id_stage = ca.stage
@@ -403,7 +436,8 @@ Si le code ne correspond pas à une offre de l’entreprise ou qu’il n’y a p
    “Il n'y a pas de candidature pour cette offre ou vous n'avez pas d'offre ayant ce code”. (coté java)
 */
 
-CREATE OR REPLACE VIEW Projet_BD2.voirCandidatures AS
+CREATE
+OR REPLACE VIEW Projet_BD2.voirCandidatures AS
 SELECT et.id_etudiant,
        st.id_stage,
        st.code_stage,
@@ -440,58 +474,66 @@ Si l’entreprise avait d’autres offres de stage non annulées durant ce semes
    toutes les candidatures en attente de ces offres passeront à « refusée »
    */
 
-CREATE OR REPLACE FUNCTION Projet_BD2.selectionnerEtudiant(_code_stage VARCHAR(10),
+CREATE
+OR REPLACE FUNCTION Projet_BD2.selectionnerEtudiant(_code_stage VARCHAR(10),
                                                            _email VARCHAR(255),
                                                            _code_entreprise CHAR(3)) RETURNS INTEGER AS
 $$
 DECLARE
-    _id_etudiant INTEGER;
+_id_etudiant INTEGER;
     _id_stage    INTEGER;
 BEGIN
-    IF NOT EXISTS(SELECT *
+    IF
+NOT EXISTS(SELECT *
                   FROM Projet_BD2.stages st
                   WHERE st.code_stage = _code_stage) THEN
         RAISE EXCEPTION 'Cette offre de stage n''existe pas';
-    END IF;
+END IF;
 
-    SELECT st.id_stage
-    INTO _id_stage
-    FROM Projet_BD2.stages st
-    WHERE st.code_stage = _code_stage;
+SELECT st.id_stage
+INTO _id_stage
+FROM Projet_BD2.stages st
+WHERE st.code_stage = _code_stage;
 
-    IF NOT EXISTS(SELECT *
+IF
+NOT EXISTS(SELECT *
                   FROM Projet_BD2.etudiants et
                   WHERE et.email = _email) THEN
         RAISE EXCEPTION 'Cet étudiant n''existe pas';
-    END IF;
+END IF;
 
-    SELECT et.id_etudiant
-    INTO _id_etudiant
-    FROM Projet_BD2.etudiants et
-    WHERE et.email = _email;
+SELECT et.id_etudiant
+INTO _id_etudiant
+FROM Projet_BD2.etudiants et
+WHERE et.email = _email;
 
-    IF NOT EXISTS(SELECT *
+IF
+NOT EXISTS(SELECT *
                   FROM Projet_BD2.stages st
                   WHERE st.id_stage = _id_stage
                     AND st.code_entreprise = _code_entreprise) THEN
         RAISE EXCEPTION 'Le stage n''appartient pas a l''entreprise';
-    END IF;
+END IF;
 
-    IF NOT EXISTS(SELECT *
+    IF
+NOT EXISTS(SELECT *
                   FROM Projet_BD2.candidatures ca
                   WHERE ca.stage = _id_stage
                     AND ca.etudiant = _id_etudiant) THEN
         RAISE EXCEPTION 'La candidature n''existe pas';
-    END IF;
+END IF;
 
-    UPDATE Projet_BD2.candidatures ca
-    SET etat = 'acceptée'
-    WHERE ca.etudiant = _id_etudiant
+UPDATE Projet_BD2.candidatures ca
+SET etat = 'acceptée'
+WHERE ca.etudiant = _id_etudiant
       AND ca.stage = _id_stage;
 
-    RETURN _id_etudiant;
+RETURN
+_
+id_etudiant;
 END
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 /* 7.
 Annuler une offre de stage en donnant son code.
@@ -503,30 +545,34 @@ Cette opération ne pourra être réalisée que si l’offre appartient bien à 
 Toutes les candidatures en attente de cette offre passeront à « refusée »
    */
 
-CREATE OR REPLACE FUNCTION Projet_BD2.annulerOffreStage(_code_stage varchar(10), _code_entreprse char(3)) RETURNS BOOLEAN AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.annulerOffreStage(_code_stage varchar(10), _code_entreprse char(3)) RETURNS BOOLEAN AS
 $$
 DECLARE
 BEGIN
-    IF NOT EXISTS(SELECT *
+    IF
+NOT EXISTS(SELECT *
                   FROM Projet_BD2.stages st
                   WHERE st.code_stage = _code_stage) THEN
         RAISE EXCEPTION 'Cette offre de stage n''existe pas';
-    END IF;
+END IF;
 
-    IF NOT EXISTS(SELECT *
+    IF
+NOT EXISTS(SELECT *
                   FROM Projet_BD2.stages st
                   WHERE st.code_stage = _code_stage
                     AND st.code_entreprise = _code_entreprse) THEN
         RAISE EXCEPTION 'Ce stage ne vient pas de votre entreprise';
-    END IF;
+END IF;
 
-    UPDATE Projet_BD2.stages st
-    SET etat = 'annulée'
-    WHERE st.code_stage = _code_stage;
+UPDATE Projet_BD2.stages st
+SET etat = 'annulée'
+WHERE st.code_stage = _code_stage;
 
-    RETURN TRUE;
+RETURN TRUE;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 /*********************************************Application Etudiant*********************************************/
 
@@ -541,7 +587,8 @@ Pour une offre de stage :
   Les mots-clés (séparés par des virgules sur une même ligne).
  */
 
-CREATE OR REPLACE VIEW Projet_BD2.offresStageValideesParEtudiant AS
+CREATE
+OR REPLACE VIEW Projet_BD2.offresStageValideesParEtudiant AS
 
 WITH offresStageValidees AS (SELECT st.code_stage,
                                     en.nom,
@@ -577,7 +624,8 @@ Pour une offre de stage :
   Les mots-clés (séparés par des virgules sur une même ligne).
 */
 
-CREATE OR REPLACE VIEW Projet_BD2.rechercheOffresStageMotClef AS
+CREATE
+OR REPLACE VIEW Projet_BD2.rechercheOffresStageMotClef AS
 
 WITH offresStageValidees AS (SELECT st.code_stage,
                                     en.nom,
@@ -622,20 +670,23 @@ Il ne peut poser de candidature :
   Si l’offre ne correspond pas au bon semestre.
 */
 
-CREATE OR REPLACE FUNCTION Projet_BD2.poserCandidature(_code_offre_stage VARCHAR(10),
+CREATE
+OR REPLACE FUNCTION Projet_BD2.poserCandidature(_code_offre_stage VARCHAR(10),
                                                        _motivations VARCHAR(255),
                                                        _id_etudiant INTEGER) RETURNS INTEGER AS
 $$
 DECLARE
-    _id_stage INTEGER;
+_id_stage INTEGER;
 BEGIN
-    IF NOT EXISTS(SELECT st.code_stage
+    IF
+NOT EXISTS(SELECT st.code_stage
                   FROM Projet_BD2.stages st
                   WHERE st.code_stage = _code_offre_stage) THEN
         RAISE 'Code d''offre de stage inexistant';
-    end if;
+end if;
 
-    IF NOT EXISTS(WITH stageSemestre AS (SELECT st.id_stage, st.code_stage, st.semestre
+    IF
+NOT EXISTS(WITH stageSemestre AS (SELECT st.id_stage, st.code_stage, st.semestre
                                          FROM Projet_BD2.stages st),
                        etudiantSemestr AS (SELECT et.id_etudiant, et.nom, et.prenom, et.semestre
                                            FROM Projet_BD2.etudiants et)
@@ -647,19 +698,22 @@ BEGIN
                     AND sts.code_stage = _code_offre_stage
                     AND ets.id_etudiant = _id_etudiant) THEN
         RAISE 'Le quadrimestre du stage ne correspond pas au quadrimestre de l''étudiant';
-    END IF;
+END IF;
 
-    SELECT st.id_stage
-    INTO _id_stage
-    FROM Projet_BD2.stages st
-    WHERE st.code_stage = _code_offre_stage;
+SELECT st.id_stage
+INTO _id_stage
+FROM Projet_BD2.stages st
+WHERE st.code_stage = _code_offre_stage;
 
-    INSERT INTO Projet_BD2.candidatures(motivation, etudiant, stage, etat)
-    VALUES (_motivations, _id_etudiant, _id_stage, DEFAULT);
+INSERT INTO Projet_BD2.candidatures(motivation, etudiant, stage, etat)
+VALUES (_ motivations, _ id_etudiant, _ id_stage, DEFAULT);
 
-    RETURN _id_stage;
+RETURN
+_
+id_stage;
 END
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 /*4.
 Voir les offres de stage pour lesquelles l’étudiant a posé sa candidature.
@@ -669,7 +723,8 @@ Pour chaque offre:
   Le nom de l’entreprise,
   L’état de sa candidature.
 */
-CREATE OR REPLACE VIEW Projet_BD2.offresCandidature AS
+CREATE
+OR REPLACE VIEW Projet_BD2.offresCandidature AS
 SELECT st.id_stage, ca.etudiant, st.code_stage, en.nom, ca.etat
 FROM Projet_BD2.candidatures ca,
      Projet_BD2.stages st,
@@ -684,67 +739,77 @@ Annuler une candidature en précisant le code de l’offre de stage.
 Les candidatures ne peuvent être annulées que si elles sont « en attente ».
  */
 
-CREATE OR REPLACE FUNCTION Projet_BD2.annulerCandidature(_code_stage VARCHAR, _id_etudiant INTEGER) RETURNS INTEGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.annulerCandidature(_code_stage VARCHAR, _id_etudiant INTEGER) RETURNS INTEGER AS
 $$
 DECLARE
-    _id_stage INTEGER;
+_id_stage INTEGER;
 BEGIN
-    IF NOT EXISTS(SELECT *
+    IF
+NOT EXISTS(SELECT *
                   FROM Projet_BD2.stages st,
                        Projet_BD2.candidatures ca
                   WHERE st.id_stage = ca.stage
                     AND st.code_stage = _code_stage
                     AND ca.etudiant = _id_etudiant) THEN
         RAISE 'Pas de candidature pour ce stage !';
-    END IF;
+END IF;
 
-    SELECT st.id_stage
-    INTO _id_stage
-    FROM Projet_BD2.stages st
-    WHERE st.code_stage = _code_stage;
+SELECT st.id_stage
+INTO _id_stage
+FROM Projet_BD2.stages st
+WHERE st.code_stage = _code_stage;
 
-    UPDATE Projet_BD2.candidatures ca
-    SET etat = 'annulée'
-    WHERE ca.stage = _id_stage
+UPDATE Projet_BD2.candidatures ca
+SET etat = 'annulée'
+WHERE ca.stage = _id_stage
       AND ca.etudiant = _id_etudiant;
 
-    RETURN _id_stage;
+RETURN
+_
+id_stage;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 /*********************************************Trigger*********************************************/
 
-CREATE OR REPLACE FUNCTION Projet_BD2.verificationInsertCandidature() RETURNS TRIGGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.verificationInsertCandidature() RETURNS TRIGGER AS
 $$
 DECLARE
 
 BEGIN
     -- Il ne peut poser de candidature : s’il a déjà une candidature acceptée,
-    IF EXISTS(SELECT *
+    IF
+EXISTS(SELECT *
               FROM Projet_BD2.candidatures c
               WHERE c.etudiant = NEW.etudiant
                 AND c.etat = 'acceptée') THEN
         RAISE 'Candidature déjà acceptée pour cet étudiant !';
-    END IF;
+END IF;
 
     -- Il ne peut poser de candidature : s’il a déjà posé sa candidature pour cette offre,
-    IF EXISTS(SELECT *
+    IF
+EXISTS(SELECT *
               FROM Projet_BD2.candidatures c
               WHERE c.etudiant = NEW.etudiant
                 AND c.stage = NEW.stage) THEN
         RAISE 'Candidature déjà posée pour cette offre !';
-    END IF;
+END IF;
 
     -- Il ne peut poser de candidature : si l’offre n’est pas dans l’état validée
-    IF EXISTS(SELECT *
+    IF
+EXISTS(SELECT *
               FROM Projet_BD2.stages st
               WHERE st.id_stage = NEW.stage
                 AND st.etat != 'validée') THEN
         RAISE 'Offre de stage correspondante dans un autre etat que validée !';
-    end if;
+end if;
 
     -- Il ne peut poser de candidature : si l’offre ne correspond pas au bon semestre.
-    IF EXISTS(SELECT *
+    IF
+EXISTS(SELECT *
               FROM Projet_BD2.stages st,
                    Projet_BD2.candidatures ca,
                    Projet_BD2.etudiants et
@@ -754,282 +819,301 @@ BEGIN
                 AND ca.stage = NEW.stage
                 AND st.semestre != et.semestre) THEN
         RAISE 'Quadrimestre non correspondant !';
-    END IF;
+END IF;
 
-    RETURN NEW;
+RETURN NEW;
 END ;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 CREATE TRIGGER triggerInsertCandidature
     BEFORE INSERT
     ON Projet_BD2.candidatures
     FOR EACH ROW
-EXECUTE PROCEDURE Projet_BD2.verificationInsertCandidature();
+    EXECUTE PROCEDURE Projet_BD2.verificationInsertCandidature();
 
-CREATE OR REPLACE FUNCTION Projet_BD2.verificationInsertCandidatureAfter() RETURNS TRIGGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.verificationInsertCandidatureAfter() RETURNS TRIGGER AS
 $$
 DECLARE
-    _nb_candidature_at INTEGER;
+_nb_candidature_at INTEGER;
 BEGIN
 
-    SELECT COUNT(ca.*)
-    INTO _nb_candidature_at
-    FROM Projet_BD2.candidatures ca
-    WHERE ca.etudiant = NEW.etudiant
-      AND ca.etat = 'en attente';
+SELECT COUNT(ca.*)
+INTO _nb_candidature_at
+FROM Projet_BD2.candidatures ca
+WHERE ca.etudiant = NEW.etudiant
+  AND ca.etat = 'en attente';
 
-    UPDATE Projet_BD2.etudiants et
-    SET nb_candidature_at = _nb_candidature_at
+UPDATE Projet_BD2.etudiants et
+SET nb_candidature_at = _nb_candidature_at
     WHERE et.id_etudiant = NEW.etudiant;
 
-    RETURN NEW;
+RETURN NEW;
 END ;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 CREATE TRIGGER triggerInsertCandidatureAfter
     AFTER INSERT
     ON Projet_BD2.candidatures
     FOR EACH ROW
-EXECUTE PROCEDURE Projet_BD2.verificationInsertCandidatureAfter();
+    EXECUTE PROCEDURE Projet_BD2.verificationInsertCandidatureAfter();
 
-CREATE OR REPLACE FUNCTION Projet_BD2.verificationEtatCandidature() RETURNS TRIGGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.verificationEtatCandidature() RETURNS TRIGGER AS
 $$
 DECLARE
-    _nb_candidature_at INTEGER;
+_nb_candidature_at INTEGER;
 BEGIN
 
     -- Les candidatures ne peuvent être annulées que si elles sont « en attente ».
 -- L’opération échouera : si la candidature n’est pas dans l’état « en attente ».
     IF
-        (OLD.etat != 'en attente' AND NEW.etat = 'annulée')
+(OLD.etat != 'en attente' AND NEW.etat = 'annulée')
     THEN
         RAISE EXCEPTION 'Une candidature qui n''est pas en attente ne peut être annulée !';
-    END IF;
+END IF;
 
 -- dis null part mais dois quand meme ete la
     IF
-        (OLD.etat != 'en attente' AND NEW.etat = 'acceptée')
+(OLD.etat != 'en attente' AND NEW.etat = 'acceptée')
     THEN
         RAISE EXCEPTION 'Une candidature qui n''est pas en attente ne peut être acceptée !';
-    END IF;
+END IF;
 
 -- dis null part mais dois quand meme ete la
     IF
-        (OLD.etat = 'acceptée' AND NEW.etat = 'refusée')
+(OLD.etat = 'acceptée' AND NEW.etat = 'refusée')
     THEN
         RAISE EXCEPTION 'Une candidature qui n''est pas acceptée ne peux etre refusée !';
-    END IF;
+END IF;
 
     IF
-        (NEW.etat = 'acceptée')
+(NEW.etat = 'acceptée')
     THEN
 
 -- L’état de l’offre passera à « attribuée ».
-        UPDATE Projet_BD2.stages st
-        SET etat = 'attribuée'
-        WHERE st.id_stage = NEW.stage;
+UPDATE Projet_BD2.stages st
+SET etat = 'attribuée'
+WHERE st.id_stage = NEW.stage;
 
 -- Les candidatures en attente de cet étudiant passeront à l’état « annulée ».
-        UPDATE Projet_BD2.candidatures ca
-        SET etat = 'annulée'
-        WHERE ca.etudiant = NEW.etudiant
-          AND ca.stage != NEW.stage
+UPDATE Projet_BD2.candidatures ca
+SET etat = 'annulée'
+WHERE ca.etudiant = NEW.etudiant
+  AND ca.stage != NEW.stage
           AND ca.etat = 'en attente';
 
 -- Les autres candidatures en attente d’étudiants pour cette offre passeront à « refusée ».
-        UPDATE Projet_BD2.candidatures ca
-        SET etat = 'refusée'
-        WHERE ca.etudiant != NEW.etudiant
+UPDATE Projet_BD2.candidatures ca
+SET etat = 'refusée'
+WHERE ca.etudiant != NEW.etudiant
           AND ca.stage = NEW.stage
           AND ca.etat = 'en attente';
-    END IF;
+END IF;
 
-    SELECT COUNT(ca.*)
-    INTO _nb_candidature_at
-    FROM Projet_BD2.candidatures ca
-    WHERE ca.etudiant = NEW.etudiant
-      AND ca.etat = 'en attente';
+SELECT COUNT(ca.*)
+INTO _nb_candidature_at
+FROM Projet_BD2.candidatures ca
+WHERE ca.etudiant = NEW.etudiant
+  AND ca.etat = 'en attente';
 
-    UPDATE Projet_BD2.etudiants et
-    SET nb_candidature_at = _nb_candidature_at
+UPDATE Projet_BD2.etudiants et
+SET nb_candidature_at = _nb_candidature_at
     WHERE et.id_etudiant = NEW.etudiant;
 
-    RETURN NEW;
+RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 CREATE TRIGGER triggerEtatCandidature
     AFTER UPDATE OF etat
     ON Projet_BD2.candidatures
     FOR EACH ROW
-EXECUTE PROCEDURE Projet_BD2.verificationEtatCandidature();
+    EXECUTE PROCEDURE Projet_BD2.verificationEtatCandidature();
 
-CREATE OR REPLACE FUNCTION Projet_BD2.verificationInsertStage() RETURNS TRIGGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.verificationInsertStage() RETURNS TRIGGER AS
 $$
 DECLARE
 BEGIN
     -- Cette fonctionnalité échouera si l’entreprise a déjà une offre de stage attribuée durant ce semestre.
-    IF EXISTS(SELECT *
+    IF
+EXISTS(SELECT *
               FROM Projet_BD2.stages st
               WHERE st.code_entreprise = NEW.code_entreprise
                 AND st.semestre = NEW.semestre
                 AND st.etat = 'attribuée') THEN
         RAISE EXCEPTION 'Un stage de cette entreprise est deja attribué pour ce semestre';
-    END IF;
+END IF;
 
-    RETURN NEW;
+RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 CREATE TRIGGER triggerInsertStage
     AFTER INSERT
     ON Projet_BD2.stages
     FOR EACH ROW
-EXECUTE PROCEDURE Projet_BD2.verificationInsertStage();
+    EXECUTE PROCEDURE Projet_BD2.verificationInsertStage();
 
 
-CREATE OR REPLACE FUNCTION Projet_BD2.verificationEtatStage() RETURNS TRIGGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.verificationEtatStage() RETURNS TRIGGER AS
 $$
 DECLARE
 BEGIN
 
     -- On ne pourra valider que des offres de stages « non validée »
     IF
-        (OLD.etat != 'non validée' AND NEW.etat = 'validée')
+(OLD.etat != 'non validée' AND NEW.etat = 'validée')
     THEN
         RAISE EXCEPTION 'Un stage dans un etat different de non validée ne peut etre validée !';
-    END IF;
+END IF;
 
 -- L’opération échouera si : l’offre n’est pas dans l’état « validée ».
     IF
-        (OLD.etat != 'validée' AND NEW.etat = 'attribuée')
+(OLD.etat != 'validée' AND NEW.etat = 'attribuée')
     THEN
         RAISE EXCEPTION 'Un stage dans un etat different de non validée ne peut etre validée ! ';
-    END IF;
+END IF;
 
     IF
-        (OLD.etat = 'annulée' AND NEW.etat = 'attribuée')
+(OLD.etat = 'annulée' AND NEW.etat = 'attribuée')
     THEN
         RAISE EXCEPTION 'Un stage dans un etat annulée ne peut etre attribuée !';
-    END IF;
+END IF;
 
 -- dis null part mais dois quand meme ete la
     IF
-        (OLD.etat = 'annulée' AND NEW.etat = 'annulée')
+(OLD.etat = 'annulée' AND NEW.etat = 'annulée')
     THEN
         RAISE EXCEPTION 'Un stage dans un etat annulée ne peut etre annulée !';
-    END IF;
+END IF;
 
     IF
-        (NEW.etat = 'attribuée')
+(NEW.etat = 'attribuée')
     THEN
 
 -- Si l’entreprise avait d’autres offres de stage dans un autre état que annulée durant ce semestre, l’état de celles-ci doit passer à « annulée ».
-        UPDATE Projet_BD2.stages st
-        SET etat = 'annulée'
-        WHERE st.code_entreprise = NEW.code_entreprise
-          AND st.etat != 'attribuée'
+UPDATE Projet_BD2.stages st
+SET etat = 'annulée'
+WHERE st.code_entreprise = NEW.code_entreprise
+  AND st.etat != 'attribuée'
           AND st.semestre IN (SELECT st1.semestre
                               FROM Projet_BD2.stages st1
                               WHERE st1.code_entreprise = NEW.code_entreprise
                                 AND st1.etat = 'attribuée');
-    END IF;
+END IF;
 
 -- Toutes les candidatures en attente de cette offre passeront à « refusée »
     IF
-        (NEW.etat = 'annulée')
+(NEW.etat = 'annulée')
     THEN
 
 -- Toutes les candidatures en attente de ces offres passeront à « refusée »
-        UPDATE Projet_BD2.candidatures ca
-        SET etat = 'refusée'
-        WHERE ca.stage = NEW.id_stage
-          AND ca.etat = 'en attente';
-    END IF;
+UPDATE Projet_BD2.candidatures ca
+SET etat = 'refusée'
+WHERE ca.stage = NEW.id_stage
+  AND ca.etat = 'en attente';
+END IF;
 
-    RETURN NEW;
+RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 CREATE TRIGGER triggerEtatStage
     AFTER UPDATE OF etat
     ON Projet_BD2.stages
     FOR EACH ROW
-EXECUTE PROCEDURE Projet_BD2.verificationEtatStage();
+    EXECUTE PROCEDURE Projet_BD2.verificationEtatStage();
 
-CREATE OR REPLACE FUNCTION Projet_BD2.creerCodeStage() RETURNS TRIGGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.creerCodeStage() RETURNS TRIGGER AS
 $$
 DECLARE
-    _code_stage VARCHAR(5);
+_code_stage VARCHAR(5);
     _index      INTEGER;
 BEGIN
 
-    SELECT COUNT(*)
-    INTO _index
-    FROM Projet_BD2.stages st
-    WHERE st.code_entreprise = NEW.code_entreprise;
+SELECT COUNT(*)
+INTO _ index
+FROM Projet_BD2.stages st
+WHERE st.code_entreprise = NEW.code_entreprise;
 
-    _code_stage = CONCAT(NEW.code_entreprise, _index + 1);
-    NEW.code_stage = _code_stage;
-    RETURN NEW;
+_code_stage = CONCAT(NEW.code_entreprise, _index + 1);
+    NEW.code_stage
+= _code_stage;
+RETURN NEW;
 
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 CREATE TRIGGER triggerCodeStage
     BEFORE INSERT
     ON Projet_BD2.stages
     FOR EACH ROW
-EXECUTE PROCEDURE Projet_BD2.creerCodeStage();
+    EXECUTE PROCEDURE Projet_BD2.creerCodeStage();
 
-CREATE OR REPLACE FUNCTION Projet_BD2.verificationInsertStageMC() RETURNS TRIGGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.verificationInsertStageMC() RETURNS TRIGGER AS
 $$
 DECLARE
 BEGIN
     -- Il sera impossible d'ajouter un mot-clé si : l'offre de stage est dans l'état "attribuée" ou "annulée"
-    IF EXISTS(SELECT *
+    IF
+EXISTS(SELECT *
               FROM Projet_BD2.stages st
               WHERE st.id_stage = NEW.stage
                 AND (st.etat = 'attribuée' OR st.etat = 'annulée')) THEN
         RAISE EXCEPTION 'Impossible d''ajouter un mot-clé, le stage est dans l''état "attribuée" ou "annulée"';
-    END IF;
+END IF;
 
-    RETURN NEW;
+RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 CREATE TRIGGER triggerInsertStageMC
     AFTER INSERT
     ON Projet_BD2.stage_mc
     FOR EACH ROW
-EXECUTE PROCEDURE Projet_BD2.verificationInsertStageMC();
+    EXECUTE PROCEDURE Projet_BD2.verificationInsertStageMC();
 
-CREATE OR REPLACE FUNCTION Projet_BD2.verificationMaxtroisMotsClefs() RETURNS TRIGGER AS
+CREATE
+OR REPLACE FUNCTION Projet_BD2.verificationMaxtroisMotsClefs() RETURNS TRIGGER AS
 $$
 DECLARE
-    _index INTEGER;
+_index INTEGER;
 BEGIN
     /* Une offre de
     stage peut avoir au maximum 3 mots-clés. Ces mots-clés doivent faire partie de la liste
     des mots-clés proposés par les professeurs. */
-    SELECT COUNT(*)
-    INTO _index
-    FROM Projet_BD2.stage_mc st_mc
-    WHERE st_mc.stage = NEW.stage;
+SELECT COUNT(*)
+INTO _ index
+FROM Projet_BD2.stage_mc st_mc
+WHERE st_mc.stage = NEW.stage;
 
-    IF _index > 3 THEN
+IF
+_index > 3 THEN
         RAISE EXCEPTION 'Une offre de stage peut avoir au maximum 3 mots-clés';
-    END IF;
+END IF;
 
-    RETURN NEW;
+RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$
+LANGUAGE plpgsql;
 
 CREATE TRIGGER triggerMaxTroisMotsClefs
     AFTER INSERT
     ON Projet_BD2.stage_mc
     FOR EACH ROW
-EXECUTE PROCEDURE Projet_BD2.verificationMaxtroisMotsClefs();
+    EXECUTE PROCEDURE Projet_BD2.verificationMaxtroisMotsClefs();
 
 /*********************************************Insert*********************************************/
 
@@ -1090,16 +1174,22 @@ VALUES ('Je suis tres chaud', 2, 5, DEFAULT);
 
 /*********************************************Grant*********************************************/
 
-GRANT CONNECT ON DATABASE dbnicolasheymans TO martinquisquater, gauthiercollard;
+GRANT
+CONNECT
+ON DATABASE dbnicolasheymans TO martinquisquater, gauthiercollard;
 
-GRANT USAGE ON SCHEMA Projet_BD2 TO nicolasheymans, martinquisquater, gauthiercollard;
+GRANT USAGE ON SCHEMA
+Projet_BD2 TO nicolasheymans, martinquisquater, gauthiercollard;
 
 -- Application Entreprise
-GRANT INSERT ON Projet_BD2.stages,
+GRANT INSERT ON Projet_BD2.stages
+,
     Projet_BD2.stage_mc
     TO martinquisquater;
 
-GRANT SELECT ON Projet_BD2.stages,
+GRANT
+SELECT
+ON Projet_BD2.stages,
     Projet_BD2.stage_mc,
     Projet_BD2.mots_clefs,
     Projet_BD2.candidatures,
@@ -1110,7 +1200,8 @@ GRANT SELECT ON Projet_BD2.stages,
     Projet_BD2.voirCandidatures
     TO martinquisquater;
 
-GRANT UPDATE ON Projet_BD2.candidatures,
+GRANT
+UPDATE ON Projet_BD2.candidatures,
     Projet_BD2.stages,
     Projet_BD2.etudiants
     TO martinquisquater;
@@ -1122,7 +1213,9 @@ GRANT USAGE, SELECT ON SEQUENCE Projet_BD2.stages_id_stage_seq
 GRANT INSERT ON Projet_BD2.candidatures
     TO gauthiercollard;
 
-GRANT SELECT ON Projet_BD2.stages,
+GRANT
+SELECT
+ON Projet_BD2.stages,
     Projet_BD2.entreprises,
     Projet_BD2.stage_mc,
     Projet_BD2.mots_clefs,
@@ -1133,7 +1226,8 @@ GRANT SELECT ON Projet_BD2.stages,
     Projet_BD2.offresCandidature
     TO gauthiercollard;
 
-GRANT UPDATE ON Projet_BD2.candidatures,
+GRANT
+UPDATE ON Projet_BD2.candidatures,
     Projet_BD2.etudiants
     TO gauthiercollard;
 
