@@ -185,13 +185,13 @@ public class ApplicationProfesseur {
 			offresStageNV.execute();
 			ResultSet rs = offresStageNV.getResultSet();
 
-			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.printf(" | %-15s | %-15s | %-20s | %-15s |\n", "Code stage", "Semestre", "Nom de l'entreprise", "Description");
-			System.out.println("_______________________________________________________________________________________________________|");
+			System.out.println("____________________________________________________________________________________");
+			System.out.printf(" | %-15s | %-15s | %-20s | %-20s |\n", "Code stage", "Semestre", "Nom de l'entreprise", "Description");
+			System.out.println("____________________________________________________________________________________");
 			while (rs.next()) {
-				System.out.printf(" | %-15s | %-15s | %-20s | %-15s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+				System.out.printf(" | %-15s | %-15s | %-20s | %-20s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
 			}
-			System.out.println("_______________________________________________________________________________________________________|");
+			System.out.println("____________________________________________________________________________________");
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les offres de stage non validées !" + e.getMessage());
 		}
@@ -224,13 +224,13 @@ public class ApplicationProfesseur {
 			offresStageVA.execute();
 			ResultSet rs = offresStageVA.getResultSet();
 
-			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.printf(" | %-15s | %-15s | %-20s | %-15s |\n", "Code stage", "Semestre", "Nom de l'entreprise", "Description");
-			System.out.println("_______________________________________________________________________________________________________|");
+			System.out.println("____________________________________________________________________________________");
+			System.out.printf(" | %-15s | %-15s | %-20s | %-20s |\n", "Code stage", "Semestre", "Nom de l'entreprise", "Description");
+			System.out.println("____________________________________________________________________________________");
 			while (rs.next()) {
-				System.out.printf(" | %-15s | %-15s | %-20s | %-15s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+				System.out.printf(" | %-15s | %-15s | %-20s | %-20s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
 			}
-			System.out.println("_______________________________________________________________________________________________________|");
+			System.out.println("____________________________________________________________________________________");
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les offres de stage validées !");
 		}
@@ -244,13 +244,13 @@ public class ApplicationProfesseur {
 			etudiantsSansStage.execute();
 			ResultSet rs = etudiantsSansStage.getResultSet();
 
-			System.out.println("_______________________________________________________________________________________________________|");
-			System.out.printf(" | %-15s | %-15s | %-20s | %-15s | %-30s |\n", "Nom", "Prenom", "E-mail", "Semestre", "Nombre candidature(s) en attente");
-			System.out.println("_______________________________________________________________________________________________________|");
+			System.out.println("_____________________________________________________________________________________________________________________");
+			System.out.printf(" | %-15s | %-15s | %-20s | %-15s | %-35s |\n", "Nom", "Prenom", "E-mail", "Semestre", "Nombre candidature(s) en attente");
+			System.out.println("_____________________________________________________________________________________________________________________");
 			while (rs.next()) {
-				System.out.printf(" | %-15s | %-15s | %-20s | %-15s | %-30s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+				System.out.printf(" | %-15s | %-15s | %-20s | %-15s | %-35s |\n", rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
 			}
-			System.out.println("_______________________________________________________________________________________________________|");
+			System.out.println("_____________________________________________________________________________________________________________________");
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les etudiants sans stage !" + e.getMessage());
 		}
@@ -264,13 +264,13 @@ public class ApplicationProfesseur {
 			offresStageAT.execute();
 			ResultSet rs = offresStageAT.getResultSet();
 
-			System.out.println("_______________________________________________________________________________________________________|");
+			System.out.println("_________________________________________________________________________________________");
 			System.out.printf(" | %-15s | %-20s | %-20s | %-20s |\n", "Code du stage", "Nom de l’entreprise", "Nom de l’étudiant", "Prénom de l’étudiant");
-			System.out.println("_______________________________________________________________________________________________________|");
+			System.out.println("_________________________________________________________________________________________");
 			while (rs.next()) {
 				System.out.printf(" | %-15s | %-20s | %-20s | %-20s |\n", rs.getString(2), rs.getString(4), rs.getString(5), rs.getString(6));
 			}
-			System.out.println("_______________________________________________________________________________________________________|");
+			System.out.println("_________________________________________________________________________________________");
 		} catch (SQLException e) {
 			System.out.println("Impossible d'afficher les offres de stage attribuées !" + e.getMessage());
 		}
